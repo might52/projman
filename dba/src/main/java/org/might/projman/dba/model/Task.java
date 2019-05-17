@@ -24,7 +24,7 @@ public class Task {
     private User createdBy;
     private Date creationDate;
     private Date usedTime;
-    @ManyToMany(targetEntity = Comment.class)
+    @ManyToOne(targetEntity = Comment.class)
     private List<Comment> сomments;
 
     public Task() {

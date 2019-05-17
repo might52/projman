@@ -13,7 +13,7 @@ public class User {
     private String secondName;
     private String account;
     private String password;
-    @ManyToMany(targetEntity = ProjectRole.class)
+    @ManyToOne(targetEntity = ProjectRole.class)
     private List<ProjectRole> projectRoles;
 
     public User() {
