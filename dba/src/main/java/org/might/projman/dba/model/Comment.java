@@ -10,6 +10,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne(targetEntity = User.class)
     private Long createdBy;
     private Date creationDate;
     private String description;
