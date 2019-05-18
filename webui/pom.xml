@@ -29,9 +29,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.maven.plugin}</version>
                 <configuration>
                     <mainClass>org.might.projman.ProjmanApplication</mainClass>
-                    <goal>package</goal>
                 </configuration>
             </plugin>
         </plugins>

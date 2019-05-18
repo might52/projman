@@ -9,22 +9,15 @@
     </parent>
 
     <packaging>jar</packaging>
-
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>services</artifactId>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>org.might.projman.ProjmanApplication</mainClass>
-                    <goal>package</goal>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.might</groupId>
+            <artifactId>dba</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
