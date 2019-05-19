@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/index_style.css}"/>
+    <link rel="script" th:href="@{/static/js/index.js}">
+</head>
+
+
+<body>
+    <h2>Welcome page.</h2>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+
+        <tr th:each ="status : ${statuses}">
+            <td th:utext="${status.id}">...</td>
+            <td th:utext="${status.name}">...</td>
+        </tr>
+    </table>
+
+</body>
+</html>
