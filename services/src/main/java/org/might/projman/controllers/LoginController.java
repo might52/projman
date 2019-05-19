@@ -33,7 +33,7 @@ public class LoginController {
     @GetMapping(value = {"/", "/index", "/login"})
     public String getData(Model model) {
         model.addAttribute(LOGIN_FORM_ATTR, new LoginForm());
-        return "index.html";
+        return "login_form.html";
     }
 
     @PostMapping(value = "/login")
