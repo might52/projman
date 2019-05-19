@@ -14,10 +14,6 @@ public class Status {
     public Status() {
     }
 
-    public Status(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }
