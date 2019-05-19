@@ -34,4 +34,5 @@ public class StatusServiceImpl implements StatusService {
     public void deleteStatus(Status status) {
         this.statusRepository.delete(status);
     }
+
 }

@@ -1,6 +1,7 @@
 package org.might.projman.dba.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "status")
@@ -12,6 +13,10 @@ public class Status {
 
 
     public Status() {}
+
+    public Status(String name) {
+        this.name = name;
+    }
 
     public Status(String name) {
         this.name = name;
@@ -40,4 +45,19 @@ public class Status {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Status status = (Status) o;
+        return getName().equals(status.getName());
+    }
+
 }
