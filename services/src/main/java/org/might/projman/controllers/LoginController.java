@@ -1,5 +1,6 @@
 package org.might.projman.controllers;
 
+import org.might.projman.UserPreference;
 import org.might.projman.dba.model.Status;
 import org.might.projman.formdata.LoginForm;
 import org.might.projman.services.StatusService;
@@ -17,6 +18,7 @@ import java.util.List;
 public class LoginController {
 
     private StatusService statusService;
+    private UserPreference userPreference;
 
     private static final String LOGIN_FORM_ATTR = "loginForm";
 
@@ -24,6 +26,11 @@ public class LoginController {
     public LoginController(StatusService statusService) {
         this.statusService = statusService;
         initStatusData();
+    }
+
+    @Autowired
+    public void setUserPreference(UserPreference userPreference) {
+        this.userPreference = userPreference;
     }
 
 
@@ -35,7 +42,8 @@ public class LoginController {
 
     @PostMapping(value = "/login")
     public String login(@ModelAttribute(LOGIN_FORM_ATTR) LoginForm loginForm) {
-        return "redirect:/main_page";
+        userPreference.setUserLogin("IT IS AN STUB LOGIN. PLEASE FIND ME ID DB");
+        return "redirect:/main/main_page";
     }
 
     private void initStatusData() {
