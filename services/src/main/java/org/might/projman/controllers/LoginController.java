@@ -20,19 +20,15 @@ public class LoginController {
     private StatusService statusService;
     private UserPreference userPreference;
 
+
     private static final String LOGIN_FORM_ATTR = "loginForm";
 
     @Autowired
-    public LoginController(StatusService statusService) {
+    public LoginController(StatusService statusService, UserPreference userPreference) {
         this.statusService = statusService;
+        this.userPreference = userPreference;
         initStatusData();
     }
-
-    @Autowired
-    public void setUserPreference(UserPreference userPreference) {
-        this.userPreference = userPreference;
-    }
-
 
     @GetMapping(value = {"/", "/index", "/login"})
     public String getData(Model model) {
