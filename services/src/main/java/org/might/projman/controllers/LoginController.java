@@ -38,6 +38,7 @@ public class LoginController {
 
     @PostMapping(value = "/login")
     public String login(@ModelAttribute(LOGIN_FORM_ATTR) LoginForm loginForm) {
+        userPreference.setUserID(123);
         userPreference.setUserLogin("IT IS AN STUB LOGIN. PLEASE FIND ME ID DB");
         return "redirect:/main/main_page";
     }
