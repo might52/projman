@@ -1,11 +1,14 @@
 package org.might.projman.controllers;
 
 import org.might.projman.dba.model.Status;
+import org.might.projman.formdata.LoginForm;
 import org.might.projman.services.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,8 @@ public class LoginController {
 
     private StatusService statusService;
 
+    private static final String LOGIN_FORM_ATTR = "loginForm";
+
     @Autowired
     public LoginController(StatusService statusService) {
         this.statusService = statusService;
@@ -23,9 +28,14 @@ public class LoginController {
 
 
     @GetMapping(value = {"/", "/index", "/login"})
-    public String getData( Model statuses) {
-        statuses.addAttribute("statuses", statusService.getAll());
+    public String getData(Model model) {
+        model.addAttribute(LOGIN_FORM_ATTR, new LoginForm());
         return "index.html";
+    }
+
+    @PostMapping(value = "/login")
+    public String login(@ModelAttribute(LOGIN_FORM_ATTR) LoginForm loginForm) {
+        return "redirect:/main_page";
     }
 
     private void initStatusData() {
