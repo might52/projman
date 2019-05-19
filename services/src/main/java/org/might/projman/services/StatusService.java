@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StatusService {
     Status getStatusById(Long id);
-    void saveStatus(Status note);
+    void saveStatus(Status status);
     void deleteStatus(Status status);
     List<Status> getAll();
 }
