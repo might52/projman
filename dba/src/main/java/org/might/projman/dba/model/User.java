@@ -14,7 +14,7 @@ public class User {
     private String secondName;
     private String account;
     private String password;
-    @ManyToOne(targetEntity = ProjectRole.class)
+    @OneToMany(targetEntity = ProjectRole.class, mappedBy = "userId")
     private List<ProjectRole> projectRoles;
 
     public User() {
@@ -71,12 +71,12 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", projectRoles=" + projectRoles +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", secondName='" + getSecondName() + '\'' +
+                ", account='" + getAccount() + '\'' +
+                ", password='" + getPassword() + '\'' +
+                ", projectRoles=" + getProjectRoles() +
                 '}';
     }
 

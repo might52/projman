@@ -29,13 +29,14 @@
 </div>
 
 <div class="btn-group" role="toolbar" th:method="get">
-    <button type="submit" th:action="@{/tools/dbtool/status}" class="btn btn-secondary">Statuses</button>
-    <button type="submit" th:action="@{/tools/dbtool/role}" class="btn btn-secondary" >Roles</button>
-    <button type="submit" th:action="@{/tools/dbtool/project}" class="btn btn-secondary">Projects</button>
-    <button type="submit" th:action="@{/tools/dbtool/project_role}" class="btn btn-secondary">ProjectRoles</button>
-    <button type="submit" th:action="@{/tools/dbtool/comment}" class="btn btn-secondary">Comments</button>
-    <button type="submit" th:action="@{/tools/dbtool/task}" class="btn btn-secondary">Tasks</button>
-    <button type="submit" th:action="@{/tools/dbtool/user}" class="btn btn-secondary">Users</button>
+    <button type="submit" onclick="location.href='/tools/dbtool'" class="btn btn-secondary">All tables</button>
+    <button type="submit" onclick="location.href='/tools/dbtool/status'" class="btn btn-secondary">Statuses</button>
+    <button type="submit" onclick="location.href='/tools/dbtool/role'" class="btn btn-secondary" >Roles</button>
+    <button type="submit" onclick="location.href='/tools/dbtool/project'" class="btn btn-secondary">Projects</button>
+    <button type="submit" onclick="location.href='/tools/dbtool/project_role'" class="btn btn-secondary">ProjectRoles</button>
+    <button type="submit" onclick="location.href='/tools/dbtool/comment'" class="btn btn-secondary">Comments</button>
+    <button type="submit" onclick="location.href='/tools/dbtool/task'" class="btn btn-secondary">Tasks</button>
+    <button type="submit" onclick="location.href='/tools/dbtool/user'" class="btn btn-secondary">Users</button>
 </div>
 <div class="list-group ">
     <hr>

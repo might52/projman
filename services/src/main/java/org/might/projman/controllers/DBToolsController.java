@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/tools")
-public class ToolsController {
+public class DBToolsController {
 
     private StatusService statusService;
     private CommentService commentService;
@@ -28,10 +28,10 @@ public class ToolsController {
     private static final String TABLE_NAME_ATTRIBUTE = "tableName";
 
     @Autowired
-    public ToolsController(StatusService statusService, CommentService commentService,
-                           ProjectService projectService, ProjectRoleService projectRoleService,
-                           RoleService roleService, TaskService taskService,
-                           UserService userService, UserPreference userPreference) {
+    public DBToolsController(StatusService statusService, CommentService commentService,
+                             ProjectService projectService, ProjectRoleService projectRoleService,
+                             RoleService roleService, TaskService taskService,
+                             UserService userService, UserPreference userPreference) {
         this.statusService = statusService;
         this.commentService = commentService;
         this.projectService = projectService;
@@ -82,6 +82,7 @@ public class ToolsController {
 
     @GetMapping(value = {"/dbtool/project_role"})
     public String getProjectRoles(Model model) {
+
         model.addAttribute("elems", projectRoleService.getAll());
         return "dbtool.html";
     }
