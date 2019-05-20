@@ -1,8 +1,8 @@
-package org.might.projman.controllers;
+package org.might.projman.controllers.annotations;
 
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@interface Auth {
+public @interface Auth {
 }
