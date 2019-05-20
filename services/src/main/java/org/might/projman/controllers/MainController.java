@@ -13,10 +13,8 @@ public class MainController {
 
     private UserPreference userPreference;
 
-    public MainController() {}
-
     @Autowired
-    public void setUserPreference(UserPreference userPreference) {
+    public MainController(UserPreference userPreference) {
         this.userPreference = userPreference;
     }
 
