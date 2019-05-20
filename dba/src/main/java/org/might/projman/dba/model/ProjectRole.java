@@ -71,8 +71,4 @@ public class ProjectRole {
                 getRoleId().equals(that.getRoleId());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getProjectId(), getUserId(), getRoleId());
-    }
 }

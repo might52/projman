@@ -3,6 +3,7 @@ package org.might.projman.dba.model;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "task")
@@ -117,4 +118,35 @@ public class Task {
     public void setСomments(List<Comment> сomments) {
         this.сomments = сomments;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", subject='" + subject + '\'' +
+                ", description='" + description + '\'' +
+                ", statusId=" + statusId +
+                ", projectId=" + projectId +
+                ", assigneId=" + assigneId +
+                ", dueDate=" + dueDate +
+                ", createdBy=" + createdBy +
+                ", creationDate=" + creationDate +
+                ", usedTime=" + usedTime +
+                ", сomments=" + сomments +
+                '}';
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return getId().equals(task.getId()) &&
+                getSubject().equals(task.getSubject()) &&
+                getDescription().equals(task.getDescription()) &&
+                getProjectId().equals(task.getProjectId()) &&
+                getCreationDate().equals(task.getCreationDate());
+    }
+
 }

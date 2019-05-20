@@ -71,8 +71,4 @@ public class Comment {
                 getDescription().equals(comment.getDescription());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getCreatedBy(), getCreationDate(), getDescription());
-    }
 }
