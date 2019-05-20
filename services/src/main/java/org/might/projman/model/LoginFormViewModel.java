@@ -1,6 +1,6 @@
-package org.might.projman.formdata;
+package org.might.projman.model;
 
-public class LoginForm {
+public class LoginFormViewModel {
 
     private String login;
     private String password;

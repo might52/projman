@@ -1,6 +1,7 @@
 package org.might.projman.dba.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "project_role")
@@ -8,10 +9,12 @@ public class ProjectRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne(targetEntity = Project.class)
+    private Project projectId;
     @ManyToOne(targetEntity = User.class)
-    private Long userId;
+    private User userId;
     @ManyToOne(targetEntity = Role.class)
-    private Long roleId;
+    private Role roleId;
 
     public ProjectRole() {
     }
@@ -24,19 +27,27 @@ public class ProjectRole {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public Project getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Project projectId) {
+        this.projectId = projectId;
+    }
+
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
-    public Long getRoleId() {
+    public Role getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(Role roleId) {
         this.roleId = roleId;
     }
 
@@ -44,8 +55,20 @@ public class ProjectRole {
     public String toString() {
         return "ProjectRole{" +
                 "id=" + id +
+                ", projectId=" + projectId +
                 ", userId=" + userId +
                 ", roleId=" + roleId +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProjectRole that = (ProjectRole) o;
+        return getProjectId().equals(that.getProjectId()) &&
+                getUserId().equals(that.getUserId()) &&
+                getRoleId().equals(that.getRoleId());
+    }
+
 }

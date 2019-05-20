@@ -2,6 +2,7 @@ package org.might.projman.dba.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "comment")
@@ -11,7 +12,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(targetEntity = User.class)
-    private Long createdBy;
+    private User createdBy;
     private Date creationDate;
     private String description;
 
@@ -26,11 +27,11 @@ public class Comment {
         this.id = id;
     }
 
-    public Long getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -59,4 +60,15 @@ public class Comment {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return getCreatedBy().equals(comment.getCreatedBy()) &&
+                getCreationDate().equals(comment.getCreationDate()) &&
+                getDescription().equals(comment.getDescription());
+    }
+
 }

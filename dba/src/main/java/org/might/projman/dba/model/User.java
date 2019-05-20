@@ -2,6 +2,7 @@ package org.might.projman.dba.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -78,4 +79,15 @@ public class User {
                 ", projectRoles=" + projectRoles +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getId().equals(user.getId()) &&
+                getName().equals(user.getName()) &&
+                getAccount().equals(user.getAccount());
+    }
+
 }
