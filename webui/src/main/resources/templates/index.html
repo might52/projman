@@ -13,7 +13,7 @@
 <h2>Welcome page.</h2>
 
 <form th:action="@{/login}"
-      th:object="${loginForm}" method="post">
+      th:object="${loginFormViewModel}" method="post">
     Login:
     <input type="text" th:field="*{login}" />
 

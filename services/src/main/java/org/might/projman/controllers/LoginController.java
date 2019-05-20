@@ -2,7 +2,7 @@ package org.might.projman.controllers;
 
 import org.might.projman.UserPreference;
 import org.might.projman.dba.model.Status;
-import org.might.projman.formdata.LoginForm;
+import org.might.projman.model.LoginFormViewModel;
 import org.might.projman.services.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class LoginController {
     private UserPreference userPreference;
 
 
-    private static final String LOGIN_FORM_ATTR = "loginForm";
+    private static final String LOGIN_FORM_ATTR = "loginFormViewModel";
 
     @Autowired
     public LoginController(StatusService statusService, UserPreference userPreference) {
@@ -32,12 +32,12 @@ public class LoginController {
 
     @GetMapping(value = {"/", "/index", "/login"})
     public String getData(Model model) {
-        model.addAttribute(LOGIN_FORM_ATTR, new LoginForm());
+        model.addAttribute(LOGIN_FORM_ATTR, new LoginFormViewModel());
         return "index.html";
     }
 
     @PostMapping(value = "/login")
-    public String login(@ModelAttribute(LOGIN_FORM_ATTR) LoginForm loginForm) {
+    public String login(@ModelAttribute(LOGIN_FORM_ATTR) LoginFormViewModel loginFormViewModel) {
         userPreference.setUserID(123);
         userPreference.setUserLogin("IT IS AN STUB LOGIN. PLEASE FIND ME ID DB");
         return "redirect:/main/main_page";
