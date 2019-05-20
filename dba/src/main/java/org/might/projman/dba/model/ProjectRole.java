@@ -9,11 +9,11 @@ public class ProjectRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(targetEntity = Project.class)
+    @OneToOne(targetEntity = Project.class)
     private Project projectId;
-    @ManyToOne(targetEntity = User.class)
+    @OneToOne(targetEntity = User.class)
     private User userId;
-    @ManyToOne(targetEntity = Role.class)
+    @OneToOne(targetEntity = Role.class)
     private Role roleId;
 
     public ProjectRole() {
@@ -54,10 +54,10 @@ public class ProjectRole {
     @Override
     public String toString() {
         return "ProjectRole{" +
-                "id=" + id +
-                ", projectId=" + projectId +
-                ", userId=" + userId +
-                ", roleId=" + roleId +
+                "id=" + getId() +
+                ", projectId=" + getProjectId() +
+                ", userId=" + getUserId().getName() +
+                ", roleId=" + getRoleId() +
                 '}';
     }
 
