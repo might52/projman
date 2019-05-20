@@ -14,5 +14,28 @@ Id:
 Login
 <td th:utext="${user_pref.userLogin}">...</td>
 
+<br>
+<br>
+
+<form th:action="@{/main/generatedata}" method="get">
+    <button class="login100-form-btn">
+        Generate stub data
+    </button>
+</form>
+
+<div>
+    Projects:<br>
+    <table border="1">
+        <tr>
+            <td>Name</td>
+            <td>Description</td>
+        </tr>
+        <tr th:each="project : ${projects}">
+            <td th:utext="${project.name}">...</td>
+            <td th:utext="${project.description}">...</td>
+        </tr>
+    </table>
+</div>
+
 </body>
 </html>
