@@ -29,6 +29,8 @@ public class MainController {
     @Autowired
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
+        projectService.getAll().stream().filter(project -> project.getId() != 1L).forEach(projectService::deleteProject);
+        generate();
     }
 
     @GetMapping(value = "/main_page")
@@ -48,5 +50,4 @@ public class MainController {
         }
         return MAIN_REDIRECT;
     }
-
 }
