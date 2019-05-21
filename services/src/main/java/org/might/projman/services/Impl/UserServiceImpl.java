@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserVyId(Long id) {
+    public User getUserById(Long id) {
         return userRepository.getOne(id);
     }
 

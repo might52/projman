@@ -1,12 +1,16 @@
 package org.might.projman.controllers;
 
 import org.might.projman.UserPreference;
+import org.might.projman.dba.model.Role;
+import org.might.projman.dba.model.User;
 import org.might.projman.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +45,8 @@ public class DBToolsController {
         this.userService = userService;
         this.userPreference = userPreference;
     }
+
+    //region Show tables
 
     @GetMapping(value = {"/dbtool"})
     public String getAll(Model model) {
@@ -82,7 +88,6 @@ public class DBToolsController {
 
     @GetMapping(value = {"/dbtool/project_role"})
     public String getProjectRoles(Model model) {
-
         model.addAttribute("elems", projectRoleService.getAll());
         return "dbtool.html";
     }
@@ -98,4 +103,7 @@ public class DBToolsController {
         model.addAttribute("elems", userService.getAll());
         return "dbtool.html";
     }
+
+    //endregion
+
 }

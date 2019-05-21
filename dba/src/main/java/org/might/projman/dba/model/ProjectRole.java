@@ -1,7 +1,8 @@
 package org.might.projman.dba.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "project_role")
@@ -34,7 +35,7 @@ public class ProjectRole {
     public void setProjectId(Project projectId) {
         this.projectId = projectId;
     }
-
+    @JsonIgnore
     public User getUserId() {
         return userId;
     }
