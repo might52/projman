@@ -25,7 +25,7 @@ public class ProjectRestController {
 
     @RequestMapping(value = "/projects")
     @ResponseBody
-    public List<ProjectDTOResponse> projects(@RequestParam(value = "project_name", defaultValue = "test") String projectName) {
+    public List<ProjectDTOResponse> projects(@RequestParam(value = "project_name", defaultValue = "") String projectName) {
         return projectService.getAll().stream()
                 .map(project -> project.getName().toUpperCase().matches("(.*)" + projectName.toUpperCase() + "(.*)") ?
                         ProjectDTOResponse.createFromEntity(project) : null)
