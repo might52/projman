@@ -33,6 +33,8 @@ public class MainController {
         this.userPreference = userPreference;
         this.projectService = projectService;
         this.taskService = taskService;
+        projectService.getAll().stream().filter(project -> project.getId() != 1L).forEach(projectService::deleteProject);
+        generate();
     }
 
     @GetMapping(value = "/main_page")
@@ -52,5 +54,4 @@ public class MainController {
         }
         return MAIN_REDIRECT;
     }
-
 }
