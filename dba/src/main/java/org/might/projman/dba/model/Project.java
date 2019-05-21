@@ -46,4 +46,14 @@ public class Project {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return getName().equals(project.getName()) &&
+                getDescription().equals(project.getDescription());
+    }
+
 }
