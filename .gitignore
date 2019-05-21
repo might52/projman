@@ -1,0 +1,9 @@
+webui/target
+webui/webui.iml
+services/target
+services/services.iml
+projman.iml
+dba/target
+dba/src/main/resources/db/projman.mv.db
+dba/dba.iml
+.idea/
