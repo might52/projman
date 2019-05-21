@@ -4,6 +4,8 @@ import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.Project;
 import org.might.projman.services.ProjectService;
+import org.might.projman.services.TaskService;
+import org.might.projman.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,15 +22,17 @@ public class MainController {
 
     private UserPreference userPreference;
     private ProjectService projectService;
+    private TaskService taskService;
 
     @Autowired
-    public void setUserPreference(UserPreference userPreference) {
+    public MainController(
+            UserPreference userPreference,
+            ProjectService projectService,
+            TaskService taskService
+    ) {
         this.userPreference = userPreference;
-    }
-
-    @Autowired
-    public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
+        this.taskService = taskService;
         projectService.getAll().stream().filter(project -> project.getId() != 1L).forEach(projectService::deleteProject);
         generate();
     }
