@@ -5,7 +5,6 @@ import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.Project;
 import org.might.projman.services.ProjectService;
 import org.might.projman.services.TaskService;
-import org.might.projman.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 
     private static final String MAIN_FORM = "main_form.html";
+    private static final String TASK_FORM = "task_form.html";
     private static final String MAIN_REDIRECT = "redirect:/main/main_page";
 
     private UserPreference userPreference;
