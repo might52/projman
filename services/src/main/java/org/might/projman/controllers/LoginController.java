@@ -33,6 +33,9 @@ public class LoginController {
 
     @GetMapping(value = {"/", "/index", "/login"})
     public String getData(Model model) {
+        if (userPreference.getUserID() != 0 && !userPreference.getUserLogin().isEmpty()) {
+            return "redirect:/main/main_page";
+        }
         model.addAttribute(LOGIN_FORM_ATTR, new LoginFormViewModel());
         return "login_form.html";
     }
