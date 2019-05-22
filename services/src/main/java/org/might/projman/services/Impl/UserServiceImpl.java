@@ -20,8 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        // FIXME: need to rewrite via findALl().
-        return userRepository.getOne(id);
+        return userRepository.findById(id).get();
     }
 
     @Override

@@ -20,8 +20,7 @@ public class ProjectRoleServiceImpl implements ProjectRoleService {
 
     @Override
     public ProjectRole getProjectRoleById(Long id) {
-        // FIXME: need to rewrite via findALl().
-        return projectRoleRepository.getOne(id);
+        return projectRoleRepository.findById(id).get();
     }
 
     @Override

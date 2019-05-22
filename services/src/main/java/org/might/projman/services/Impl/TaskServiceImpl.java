@@ -20,8 +20,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTaskById(Long id) {
-        // FIXME: need to rewrite via findALl()
-        return taskRepository.getOne(id);
+        return taskRepository.findById(id).get();
     }
 
     @Override

@@ -20,8 +20,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     public Status getStatusById(Long id) {
-        // FIXME: need to rewrite via findALl().
-        return this.statusRepository.getOne(id);
+        return statusRepository.findById(id).get();
     }
 
     public List<Status> getAll() {

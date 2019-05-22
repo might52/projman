@@ -26,8 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project getProjectById(Long id) {
-        // FIXME: need to rewrite via findALl().
-        return projectRepository.getOne(id);
+        return projectRepository.findById(id).get();
     }
 
     @Override
