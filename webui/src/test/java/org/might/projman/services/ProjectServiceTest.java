@@ -12,6 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+
+
 @SpringBootTest("ProjectServiceTest")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProjectServiceTest {
@@ -88,6 +91,9 @@ public class ProjectServiceTest {
 //        projectRole.setUserId(userService.getAll().stream().filter(
 //                u -> u.getName().equals(PROJECT_NAME)).findFirst().get());
         projectRoleService.saveProjectRole(projectRole);
+
+        User userInDB = userService.getAll().stream().findFirst().get();
+        System.out.println("!!!!!!!!!!!!!!!!!!  " + userInDB);
 
         projectService.deleteProject(finalProject);
 
