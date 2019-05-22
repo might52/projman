@@ -20,6 +20,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment getCommentById(Long id) {
+        // FIXME: need to rewrite via findALl().
         return commentRepository.getOne(id);
     }
 

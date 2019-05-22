@@ -1,6 +1,7 @@
 package org.might.projman.controllers;
 
 import org.might.projman.UserPreference;
+import org.might.projman.dba.model.ProjectRole;
 import org.might.projman.dba.model.Role;
 import org.might.projman.dba.model.User;
 import org.might.projman.services.*;
@@ -30,6 +31,7 @@ public class DBToolsController {
     private UserPreference userPreference;
 
     private static final String TABLE_NAME_ATTRIBUTE = "tableName";
+    private static final String TEST_PROJECT_NAME = "testProject";
 
     @Autowired
     public DBToolsController(StatusService statusService, CommentService commentService,
@@ -102,6 +104,15 @@ public class DBToolsController {
     public String getUsers(Model model) {
         model.addAttribute("elems", userService.getAll());
         return "dbtool.html";
+    }
+
+    @GetMapping(value = "dbtool/remove_test_project")
+    public String removeTestProject(Model model) {
+        if (projectService.getAll().size() != 0) {
+            projectService.deleteProject(projectService.getAll().stream().filter(p -> p.getName().equals(TEST_PROJECT_NAME)).findFirst().get());
+        }
+
+        return "redirect:/tools/dbtool";
     }
 
     //endregion

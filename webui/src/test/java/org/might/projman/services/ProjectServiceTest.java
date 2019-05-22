@@ -53,7 +53,9 @@ public class ProjectServiceTest {
                 String.format("Prject name: %s, projectService.deleteProject(projectService.getAll().stream().findFirst().get());Project id: %s, Project desc: %s",
                         proj.getName(), proj.getId(), proj.getDescription())));
 
-        projectService.deleteProject(projectService.getAll().stream().findFirst().get());
+        if (projectService.getAll().size() != 0) {
+            projectService.deleteProject(projectService.getAll().stream().findFirst().get());
+        }
 
         Project project = new Project();
         project.setName(PROJECT_NAME);
@@ -82,12 +84,12 @@ public class ProjectServiceTest {
         projectRole.setProjectId(project);
         projectRole.setUserId(user);
         projectRole.setRoleId(role);
-//        projectRole.setProjectId(finalProject);
-//        projectRole.setRoleId(roleService.getAll().stream().filter(
-//                u -> u.getName().equals(PROJECT_NAME)).findFirst().get());
-//        projectRole.setUserId(userService.getAll().stream().filter(
-//                u -> u.getName().equals(PROJECT_NAME)).findFirst().get());
         projectRoleService.saveProjectRole(projectRole);
+
+        System.out.println(userService.getAll().get(0));
+        System.out.println(roleService.getAll().get(0));
+        System.out.println(projectService.getAll().get(0));
+        System.out.println(projectRoleService.getAll().get(0));
 
         projectService.deleteProject(finalProject);
 
@@ -96,7 +98,8 @@ public class ProjectServiceTest {
                 String.format("Project name: %s, Project id: %s, Project desc: %s",
                         proj.getName(), proj.getId(), proj.getDescription())));
 
-        Assert.assertTrue(projectService.getAll().contains(project));
+        Assert.assertFalse(projectService.getAll().contains(finalProject));
 
     }
+
 }
