@@ -1,6 +1,7 @@
 package org.might.projman.dba.model;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,11 +12,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String secondName;
     private String account;
     private String password;
-    @OneToMany(targetEntity = ProjectRole.class, mappedBy = "userId")
-    private List<ProjectRole> projectRoles;
+    // TODO: remove this block
+/*    @OneToMany(targetEntity = ProjectRole.class, mappedBy = "userId", fetch = FetchType.EAGER)
+    private List<ProjectRole> projectRoles;*/
 
     public User() {
     }
@@ -60,14 +63,6 @@ public class User {
         this.password = password;
     }
 
-    public List<ProjectRole> getProjectRoles() {
-        return projectRoles;
-    }
-
-    public void setProjectRoles(List<ProjectRole> projectRoles) {
-        this.projectRoles = projectRoles;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -76,7 +71,6 @@ public class User {
                 ", secondName='" + getSecondName() + '\'' +
                 ", account='" + getAccount() + '\'' +
                 ", password='" + getPassword() + '\'' +
-                ", projectRoles=" + getProjectRoles() +
                 '}';
     }
 

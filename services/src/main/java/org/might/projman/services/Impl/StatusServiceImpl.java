@@ -20,7 +20,7 @@ public class StatusServiceImpl implements StatusService {
     }
 
     public Status getStatusById(Long id) {
-        return this.statusRepository.getOne(id);
+        return statusRepository.findById(id).get();
     }
 
     public List<Status> getAll() {

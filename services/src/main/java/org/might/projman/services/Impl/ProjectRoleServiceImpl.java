@@ -20,7 +20,7 @@ public class ProjectRoleServiceImpl implements ProjectRoleService {
 
     @Override
     public ProjectRole getProjectRoleById(Long id) {
-        return projectRoleRepository.getOne(id);
+        return projectRoleRepository.findById(id).get();
     }
 
     @Override
