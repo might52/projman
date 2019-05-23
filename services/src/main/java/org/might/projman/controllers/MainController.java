@@ -24,6 +24,7 @@ public class MainController {
     private static final String TASK_FORM = "task_form.html";
     private static final String MAIN_REDIRECT = "redirect:/main/main_page";
     private static final String LOGIN_FORM_ATTR = "loginFormViewModel";
+    private static final String NOT_FOUND = "not_found.html";
 
     private final UserPreference userPreference;
     private final ProjectService projectService;
@@ -97,5 +98,10 @@ public class MainController {
     @GetMapping(value = "/project_page")
     public String projectPage(@RequestParam("project_id") long projectId) {
         return PROJECT_FORM;
+    }
+
+    @GetMapping(value = "/not_found")
+    public String notFount() {
+        return NOT_FOUND;
     }
 }
