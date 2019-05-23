@@ -89,7 +89,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h4 class="card-title">Project</h4>
-                                        <p class="card-category" th:utext="${project.name}"></p>
+                                        <a th:href="@{/main/project_page?project_id={id}(id=${project.id})}" class="card-category" th:utext="${project.name}"></a>
                                     </div>
                                     <div class="card-body">
                                         <div id="task-complete" th:utext="${project.description}"></div>
@@ -244,7 +244,7 @@
 						        <div class="card">\
                                     <div class="card-header">\
                                         <h4 class="card-title">Project</h4>\
-                                        <p class="card-category">' + item.name + '</p>\
+                                        <a href="/main/project_page?project_id=' + item.id +'" class="card-category">' + item.name + '</a>\
                                     </div>\
                                     <div class="card-body">\
                                         <div id="task-complete">' + item.description + '</div>\

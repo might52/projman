@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
 public class MainController {
 
     private static final String MAIN_FORM = "main_form.html";
+    private static final String PROJECT_FORM = "project_form.html";
     private static final String TASK_FORM = "task_form.html";
     private static final String MAIN_REDIRECT = "redirect:/main/main_page";
     private static final String LOGIN_FORM_ATTR = "loginFormViewModel";
@@ -91,5 +92,10 @@ public class MainController {
         userPreference.setUserID(0);
         userPreference.setUserLogin(null);
         return MAIN_REDIRECT;
+    }
+
+    @GetMapping(value = "/project_page")
+    public String projectPage(@RequestParam("project_id") long projectId) {
+        return PROJECT_FORM;
     }
 }
