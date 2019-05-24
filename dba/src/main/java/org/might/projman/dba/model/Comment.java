@@ -1,5 +1,7 @@
 package org.might.projman.dba.model;
 
+import org.hibernate.annotations.ManyToAny;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
@@ -11,7 +13,9 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = Task.class)
+    private Task taskId;
+    @OneToOne(targetEntity = User.class)
     private User createdBy;
     private Date creationDate;
     private String description;
@@ -49,6 +53,14 @@ public class Comment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Task getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Task taskId) {
+        this.taskId = taskId;
     }
 
     @Override

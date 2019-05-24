@@ -25,8 +25,6 @@ public class Task {
     private User createdBy;
     private Date creationDate;
     private Date usedTime;
-    @ManyToOne(targetEntity = Comment.class)
-    private List<Comment> сomments;
 
     public Task() {
     }
@@ -111,14 +109,6 @@ public class Task {
         this.usedTime = usedTime;
     }
 
-    public List<Comment> getСomments() {
-        return сomments;
-    }
-
-    public void setСomments(List<Comment> сomments) {
-        this.сomments = сomments;
-    }
-
     @Override
     public String toString() {
         return "Task{" +
@@ -132,7 +122,6 @@ public class Task {
                 ", createdBy=" + createdBy +
                 ", creationDate=" + creationDate +
                 ", usedTime=" + usedTime +
-                ", сomments=" + сomments +
                 '}';
     }
 

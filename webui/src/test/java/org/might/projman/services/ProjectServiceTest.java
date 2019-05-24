@@ -12,6 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Iterator;
+import java.util.List;
+
 @SpringBootTest("ProjectServiceTest")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProjectServiceTest {
@@ -30,6 +33,7 @@ public class ProjectServiceTest {
     @Test
     @Order(1)
     public void createProject() {
+        cleanupDatabase();
         System.out.println(String.format("Projects count: %s", projectService.getAll().size()));
         projectService.getAll().forEach(proj -> System.out.println(
                 String.format("Prject name: %s, Project id: %s, Project desc: %s",
@@ -53,9 +57,7 @@ public class ProjectServiceTest {
                 String.format("Prject name: %s, projectService.deleteProject(projectService.getAll().stream().findFirst().get());Project id: %s, Project desc: %s",
                         proj.getName(), proj.getId(), proj.getDescription())));
 
-        if (projectService.getAll().size() != 0) {
-            projectService.deleteProject(projectService.getAll().stream().findFirst().get());
-        }
+        cleanupDatabase();
 
         Project project = new Project();
         project.setName(PROJECT_NAME);
@@ -99,7 +101,35 @@ public class ProjectServiceTest {
                         proj.getName(), proj.getId(), proj.getDescription())));
 
         Assert.assertFalse(projectService.getAll().contains(finalProject));
+    }
 
+
+    private void cleanupDatabase(){
+        if (projectService.getAll().size() != 0) {
+            List<Project> projects = projectService.getAll();
+            Iterator<Project> iterator = projects.iterator();
+            while (iterator.hasNext()) {
+                projectService.deleteProject(projectService.getProjectById(iterator.next().getId()));
+            }
+        }
+
+        if (userService.getAll().size() != 0) {
+            List<User> users = userService.getAll();
+            Iterator<User> iterator = users.iterator();
+            while (iterator.hasNext()) {
+                userService.deleteUser(userService.getUserById(iterator.next().getId()));
+            }
+        }
+
+        if (roleService.getAll().size() != 0) {
+            List<Role> roles = roleService.getAll();
+            Iterator<Role> iterator = roles.iterator();
+            while (iterator.hasNext()) {
+                roleService.deleteRole(roleService.getRoleById(iterator.next().getId()));
+            }
+        }
     }
 
 }
+
+
