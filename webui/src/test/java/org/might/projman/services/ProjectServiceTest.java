@@ -1,8 +1,10 @@
 package org.might.projman.services;
 
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.might.projman.dba.model.Project;
 import org.might.projman.dba.model.ProjectRole;
 import org.might.projman.dba.model.Role;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @SpringBootTest("ProjectServiceTest")
 @RunWith(SpringJUnit4ClassRunner.class)
+@FixMethodOrder(value = MethodSorters.NAME_ASCENDING)
 public class ProjectServiceTest {
 
     @Autowired
@@ -29,19 +32,16 @@ public class ProjectServiceTest {
     private RoleService roleService;
 
     private static final String PROJECT_NAME = "TestJUnitProject";
+    private static final String PROJECT_NAME_SECOND = "TestJUnitProject_second";
 
     @Test
-    @Order(1)
     public void createProject() {
         cleanupDatabase();
         System.out.println(String.format("Projects count: %s", projectService.getAll().size()));
         projectService.getAll().forEach(proj -> System.out.println(
                 String.format("Prject name: %s, Project id: %s, Project desc: %s",
                         proj.getName(), proj.getId(), proj.getDescription())));
-        Project project = new Project();
-        project.setName(PROJECT_NAME);
-        project.setDescription(PROJECT_NAME);
-        projectService.saveProject(project);
+        Project project = createTestProject();
         System.out.println(String.format("Projects count: %s", projectService.getAll().size()));
         projectService.getAll().forEach(proj -> System.out.println(
                 String.format("Prject name: %s, Project id: %s, Project desc: %s",
@@ -50,7 +50,6 @@ public class ProjectServiceTest {
     }
 
     @Test
-    @Order(2)
     public void deleteProjectWithRelations() {
         System.out.println(String.format("Projects count: %s", projectService.getAll().size()));
         projectService.getAll().forEach(proj -> System.out.println(
@@ -59,10 +58,7 @@ public class ProjectServiceTest {
 
         cleanupDatabase();
 
-        Project project = new Project();
-        project.setName(PROJECT_NAME);
-        project.setDescription(PROJECT_NAME);
-        projectService.saveProject(project);
+        Project project = createTestProject();
         System.out.println(String.format("Projects count: %s", projectService.getAll().size()));
         projectService.getAll().forEach(proj -> System.out.println(
                 String.format("Project name: %s, Project id: %s, Project desc: %s",
@@ -103,6 +99,43 @@ public class ProjectServiceTest {
         Assert.assertFalse(projectService.getAll().contains(finalProject));
     }
 
+    @Test
+    public void updateProject() {
+        System.out.println(String.format("Projects count: %s", projectService.getAll().size()));
+
+
+        System.out.println(String.format("Projects count after creation: %s", projectService.getAll().size()));
+
+        projectService.getAll().forEach(proj -> System.out.println(
+                String.format("Prject name: %s, projectService.deleteProject(projectService.getAll().stream().findFirst().get());Project id: %s, Project desc: %s",
+                        proj.getName(), proj.getId(), proj.getDescription())));
+
+        Project project = createTestProject();
+
+        project = projectService.getProjectById(projectService
+                .getAll()
+                .stream()
+                .filter(proj -> proj.getName().equals(PROJECT_NAME))
+                .findFirst().get().getId());
+
+        project.setName(PROJECT_NAME_SECOND);
+        project.setDescription(PROJECT_NAME_SECOND);
+
+        projectService.saveProject(project);
+
+        Project project_second = projectService.getProjectById(project.getId());
+
+        Assert.assertTrue(project_second.getName().equals(PROJECT_NAME_SECOND));
+
+    }
+
+    private Project createTestProject(){
+        Project project = new Project();
+        project.setName(PROJECT_NAME);
+        project.setDescription(PROJECT_NAME);
+        projectService.saveProject(project);
+        return project;
+    }
 
     private void cleanupDatabase(){
         if (projectService.getAll().size() != 0) {

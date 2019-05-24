@@ -1,10 +1,8 @@
 package org.might.projman.dba.model;
 
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "comment")
