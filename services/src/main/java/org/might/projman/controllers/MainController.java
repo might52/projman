@@ -106,6 +106,7 @@ public class MainController {
 
     @GetMapping(value = "/project_page")
     public String projectPage(@RequestParam("project_id") long projectId, Model model) {
+        model.addAttribute("user_pref", userPreference);
         Project project = projectService.getProjectById(projectId);
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute(TASK_FORM_ATTR, new CreateEditProjectViewModel());
