@@ -76,8 +76,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return getId().equals(user.getId()) &&
-                getName().equals(user.getName()) &&
+        return getName().equals(user.getName()) &&
                 getAccount().equals(user.getAccount());
     }
 
