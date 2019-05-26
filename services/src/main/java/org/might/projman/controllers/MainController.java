@@ -116,6 +116,7 @@ public class MainController {
 
     @GetMapping(value = "/task_page")
     public String taskPage(@RequestParam("task_id") long taskID, Model model) {
+        model.addAttribute("user_pref", userPreference);
         Task task = taskService.getTaskById(taskID);
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute(COMMENT_FORM_ATTR, new CreateEditCommentViewModel());
