@@ -3,6 +3,7 @@ package org.might.projman.controllers;
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.Project;
+import org.might.projman.dba.model.Status;
 import org.might.projman.dba.model.Task;
 import org.might.projman.dba.model.User;
 import org.might.projman.model.CreateEditCommentViewModel;
@@ -52,6 +53,8 @@ public class MainController {
         this.userService = userService;
         DEBUG_removeStubProjects();
         DEBUG_generateStubProjects();
+        DEBUG_removeStubTasks();
+        DEBUG_generateStubTasks();
     }
 
     @GetMapping(value = {"/"})
@@ -75,11 +78,25 @@ public class MainController {
         projectService.getAll().stream().filter(project -> project.getId() != 1L).forEach(projectService::deleteProject);
     }
 
+    private void DEBUG_removeStubTasks() {
+        taskService.getAll().stream().filter(project -> project.getId() != 1L).forEach(taskService::deleteTask);
+    }
+
     private void DEBUG_generateStubProjects() {
         IntStream.range(1, 10).forEach(order -> {Project project = new Project();
-            project.setName("Test project name" + order);
+            project.setName("Test project name " + order);
             project.setDescription("Test project description " + order);
             projectService.saveProject(project);
+        });
+    }
+
+    private void DEBUG_generateStubTasks() {
+        IntStream.range(1, 10).forEach(order -> {
+            Task task = new Task();
+            task.setId((long) order);
+            task.setSubject("Test task subject " + order);
+            task.setDescription("Test task description " + order);
+            taskService.saveTask(task);
         });
     }
 
@@ -111,6 +128,8 @@ public class MainController {
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute(TASK_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute("project", project);
+        model.addAttribute("projects_count", projectService.getAll().size());
+        model.addAttribute("tasks", taskService.getAll());
         return PROJECT_FORM;
     }
 
@@ -134,7 +153,7 @@ public class MainController {
     }
 
     @GetMapping(value = "create_task")
-    public String createProject(@ModelAttribute(TASK_FORM_ATTR) CreateEditTaskViewModel taskViewModel) {
+    public String createTask(@ModelAttribute(TASK_FORM_ATTR) CreateEditTaskViewModel taskViewModel) {
         Task task = new Task();
         task.setSubject(taskViewModel.getName());
         task.setDescription(taskViewModel.getDescription());
