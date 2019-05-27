@@ -2,7 +2,7 @@ package org.might.projman.model;
 
 public class ProjectStat {
 
-    private Long id;
+    private long id;
     private String name;
     private String description;
     private int total;
@@ -14,7 +14,19 @@ public class ProjectStat {
     private long inProgressPercent;
     private long completedPercent;
 
-    public ProjectStat(Long id, String name, String description, int total, long assignedCount, long inProgressCount, long completedCount) {
+    private String managerName;
+
+    private long employeeCount;
+
+    public ProjectStat(long id,
+                       String name,
+                       String description,
+                       int total,
+                       long assignedCount,
+                       long inProgressCount,
+                       long completedCount,
+                       String managerName,
+                       long employeeCount) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -26,6 +38,9 @@ public class ProjectStat {
         assignedPercent = (int) ((double) assignedCount * 100 / total);
         inProgressPercent = (int) ((double) inProgressCount * 100 / total);
         completedPercent = (int) ((double) completedCount * 100 / total);
+
+        this.managerName = managerName;
+        this.employeeCount = employeeCount;
     }
 
     public Long getId() {
@@ -94,5 +109,21 @@ public class ProjectStat {
 
     public long getCompletedPercent() {
         return completedPercent;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
+    public long getEmployeeCount() {
+        return employeeCount;
+    }
+
+    public void setEmployeeCount(long employeeCount) {
+        this.employeeCount = employeeCount;
     }
 }

@@ -2,9 +2,7 @@ package org.might.projman.controllers;
 
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
-import org.might.projman.dba.model.Project;
-import org.might.projman.dba.model.Task;
-import org.might.projman.dba.model.User;
+import org.might.projman.dba.model.*;
 import org.might.projman.model.*;
 import org.might.projman.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/main")
@@ -39,18 +36,24 @@ public class MainController {
     private final ProjectService projectService;
     private final UserService userService;
     private final TaskService taskService;
+    private final RoleService roleService;
+    private final ProjectRoleService projectRoleService;
+
 
     @Autowired
     public MainController(
             UserPreference userPreference,
             ProjectService projectService,
             UserService userService,
-            TaskService taskService
-    ) {
+            TaskService taskService,
+            RoleService roleService,
+            ProjectRoleService projectRoleService) {
         this.userPreference = userPreference;
         this.projectService = projectService;
         this.userService = userService;
         this.taskService = taskService;
+        this.roleService = roleService;
+        this.projectRoleService = projectRoleService;
     }
 
     @GetMapping(value = {"/"})
@@ -78,7 +81,9 @@ public class MainController {
                                         allTasks.size(),
                                         allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("Assigned")).count(),
                                         allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("In Progress")).count(),
-                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("Completed")).count()
+                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("Completed")).count(),
+                                        getManagerName(project),
+                                        projectRoleService.getAll().stream().filter(pr -> pr.getProjectId().getId().equals(project.getId())).count()
                                 )
                         ).collect(Collectors.toList())
         );
@@ -112,12 +117,39 @@ public class MainController {
         Project project = new Project();
         project.setName(projectViewModel.getName());
         project.setDescription(projectViewModel.getDescription());
+
+        Optional<Role> role = roleService.getAll().stream().filter(r -> r.getName().startsWith("Manager")).findFirst();
+        ProjectRole projectRole = null;
+        if (role.isPresent()) {
+            projectRole = new ProjectRole();
+            projectRole.setProjectId(project);
+            projectRole.setRoleId(role.get());
+            projectRole.setUserId(userService.getUserById(userPreference.getUserID()));
+        }
+
         projectService.saveProject(project);
+        if (projectRole != null) {
+            projectRoleService.saveProjectRole(projectRole);
+        }
         return MAIN_REDIRECT;
     }
 
     @GetMapping(value = "/not_found")
     public String notFount() {
         return NOT_FOUND_FORM;
+    }
+
+    private String getManagerName(Project project) {
+        return projectRoleService.getAll()
+                .stream()
+                .filter(r -> r.getProjectId().getId().equals(project.getId())
+                        && r.getRoleId().getName().startsWith("Manager"))
+                .collect(Collectors.toList()).get(0).getUserId().getName()
+                + " "
+                + projectRoleService.getAll()
+                .stream()
+                .filter(r -> r.getProjectId().getId().equals(project.getId())
+                        && r.getRoleId().getName().startsWith("Manager"))
+                .collect(Collectors.toList()).get(0).getUserId().getSecondName();
     }
 }

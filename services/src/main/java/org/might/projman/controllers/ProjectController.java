@@ -36,6 +36,7 @@ public class ProjectController {
     private final TaskService taskService;
     private final ProjectRoleService projectRoleService;
     private final StatusService statusService;
+    private final RoleService roleService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
@@ -43,13 +44,15 @@ public class ProjectController {
                              UserService userService,
                              TaskService taskService,
                              ProjectRoleService projectRoleService,
-                             StatusService statusService) {
+                             StatusService statusService,
+                             RoleService roleService) {
         this.userPreference = userPreference;
         this.userService = userService;
         this.projectService = projectService;
         this.taskService = taskService;
         this.projectRoleService = projectRoleService;
         this.statusService = statusService;
+        this.roleService = roleService;
 
         if (statusService.getAll().isEmpty()) {
             new ArrayList<String>(3) {{
@@ -58,6 +61,15 @@ public class ProjectController {
                add("In Progress");
             }}.stream().map(this::createStatus).forEach(statusService::saveStatus);
         }
+
+        if (roleService.getAll().isEmpty()) {
+            new ArrayList<String>(3) {{
+                add("Admin");
+                add("Manager");
+                add("Employee");
+            }}.stream().map(this::createRole).forEach(roleService::saveRole);
+        }
+
     }
 
     @GetMapping(value = "/project_page")
@@ -110,6 +122,12 @@ public class ProjectController {
         Status status = new Status();
         status.setName(name);
         return status;
+    }
+
+    private Role createRole(String name) {
+        Role role = new Role();
+        role.setName(name);
+        return role;
     }
 
 }
