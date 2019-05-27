@@ -12,6 +12,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
     private String subject;
     private String description;
     @ManyToOne(targetEntity = Status.class)
@@ -25,8 +26,6 @@ public class Task {
     private User createdBy;
     private Date creationDate;
     private Date usedTime;
-    @ManyToOne(targetEntity = Comment.class)
-    private List<Comment> сomments;
 
     public Task() {
     }
@@ -111,42 +110,28 @@ public class Task {
         this.usedTime = usedTime;
     }
 
-    public List<Comment> getСomments() {
-        return сomments;
-    }
-
-    public void setСomments(List<Comment> сomments) {
-        this.сomments = сomments;
-    }
-
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
-                ", subject='" + subject + '\'' +
-                ", description='" + description + '\'' +
-                ", statusId=" + statusId +
-                ", projectId=" + projectId +
-                ", assigneId=" + assigneId +
-                ", dueDate=" + dueDate +
-                ", createdBy=" + createdBy +
-                ", creationDate=" + creationDate +
-                ", usedTime=" + usedTime +
-                ", сomments=" + сomments +
+                "subject='" + getSubject() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", statusId=" + getStatusId() +
+                ", projectId=" + getProjectId() +
+                ", assigneId=" + getAssigneId() +
+                ", dueDate=" + getDueDate() +
+                ", createdBy=" + getCreatedBy() +
+                ", creationDate=" + getCreationDate() +
+                ", usedTime=" + getUsedTime() +
                 '}';
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return getId().equals(task.getId()) &&
-                getSubject().equals(task.getSubject()) &&
-                getDescription().equals(task.getDescription()) &&
+        return getSubject().equals(task.getSubject()) &&
                 getProjectId().equals(task.getProjectId()) &&
-                getCreationDate().equals(task.getCreationDate());
+                getCreatedBy().equals(task.getCreatedBy());
     }
-
 }

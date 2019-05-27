@@ -12,13 +12,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @Column(unique = true)
     private String secondName;
+    @Column(unique = true)
     private String account;
     private String password;
-    // TODO: remove this block
-/*    @OneToMany(targetEntity = ProjectRole.class, mappedBy = "userId", fetch = FetchType.EAGER)
-    private List<ProjectRole> projectRoles;*/
 
     public User() {
     }
@@ -79,8 +76,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return getId().equals(user.getId()) &&
-                getName().equals(user.getName()) &&
+        return getName().equals(user.getName()) &&
                 getAccount().equals(user.getAccount());
     }
 

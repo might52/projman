@@ -1,8 +1,10 @@
 package org.might.projman.services;
 
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.might.projman.dba.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 //@ContextConfiguration(locations = "")
 @SpringBootTest("RoleServiceTest")
 @RunWith(SpringJUnit4ClassRunner.class)
+@FixMethodOrder(value = MethodSorters.NAME_ASCENDING)
 public class RoleServiceTest {
 
     @Autowired
@@ -26,54 +29,35 @@ public class RoleServiceTest {
     private static final String TEST_ROLE = "Tester";
 
     @Test
-    @Order(1)
     public void addNewRole() {
-        Role testRole = new Role();
-        testRole.setName(TEST_ROLE);
         System.out.println(String.format("Roles count: %s", roleService.getAll().size()));
-        for (Role role : roleService.getAll()) {
-            System.out.println(String.format("Role: %s, %s", role.getId(), role.getName()));
-            if (role.getName().equals(testRole.getName())) {
-                System.out.println(String.format("Role is found: %s, %s", role.getId(), role.getName()));
-                Assert.assertTrue(role.equals(testRole));
-                return;
-            }
-        }
-
-        if (roleService.getAll().stream().filter(role -> role.getName().equals(testRole.getName())).count() == 0) {
-            roleService.saveRole(testRole);
-        }
-
-        for (Role role : roleService.getAll()) {
-            if (role.getName().equals(testRole.getName())) {
-                Assert.assertTrue(role.equals(testRole));
-            }
-        }
+        cleanupDB();
+        Role testRole = createRole();
+        System.out.println(String.format("Roles count after creation: %s", roleService.getAll().size()));
+        Role role = new Role();
+        role.setName(TEST_ROLE);
+        Assert.assertTrue(role.equals(testRole));
     }
 
     @Test
-    @Order(2)
     public void removeCreatedRoles() {
+        cleanupDB();
+        Role role = createRole();
         System.out.println(String.format("Roles count: %s", roleService.getAll().size()));
-        if (roleService.getAll().size() == 0) {
-            Assert.assertTrue(false);
-        }
-
-/*
-        List<Role> roles = roleService
-                .getAll()
-                .stream()
-                .filter(role -> role.getName().equals(TEST_ROLE))
-                .collect(Collectors.toList());
-*/
-        List<Role> roles = roleService.getAll();
-        Iterator<Role> iterator = roles.iterator();
-        while (iterator.hasNext()) {
-            roleService.deleteRole(iterator.next());
-        }
-
+        roleService.deleteRole(roleService.getRoleById(role.getId()));
         System.out.println(String.format("Roles count after removing: %s", roleService.getAll().size()));
         Assert.assertTrue(roleService.getAll().size() == 0);
+    }
+
+    private void cleanupDB() {
+        roleService.getAll().forEach(el -> roleService.deleteRole(el));
+    }
+
+    private Role createRole() {
+        Role testRole = new Role();
+        testRole.setName(TEST_ROLE);
+        roleService.saveRole(testRole);
+        return roleService.getRoleById(testRole.getId());
     }
 }
 
