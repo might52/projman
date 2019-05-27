@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -124,6 +125,13 @@ public class ProjectController {
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             task.setDueDate(simpleDateFormat.parse(taskViewModel.getDeadline()));
+
+            Optional<User> userAccount = userService.getAll()
+                    .stream()
+                    .filter(u -> u.getAccount().equals(taskViewModel.getAccount()))
+                    .findFirst();
+
+            userAccount.ifPresent(task::setAssigneId);
 
             task.setCreationDate(new Date());
             task.setStatusId(statusService.getAll().stream().filter(status -> status.getName().startsWith("Assigned")).collect(Collectors.toList()).get(0));

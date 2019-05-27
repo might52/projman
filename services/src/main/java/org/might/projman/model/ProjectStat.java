@@ -5,7 +5,7 @@ public class ProjectStat {
     private long id;
     private String name;
     private String description;
-    private int total;
+    private long total;
     private long assignedCount;
     private long inProgressCount;
     private long completedCount;
@@ -21,7 +21,7 @@ public class ProjectStat {
     public ProjectStat(long id,
                        String name,
                        String description,
-                       int total,
+                       long total,
                        long assignedCount,
                        long inProgressCount,
                        long completedCount,
@@ -67,11 +67,11 @@ public class ProjectStat {
         this.description = description;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(long total) {
         this.total = total;
     }
 
