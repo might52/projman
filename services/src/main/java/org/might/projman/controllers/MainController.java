@@ -5,10 +5,7 @@ import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.Project;
 import org.might.projman.dba.model.Task;
 import org.might.projman.dba.model.User;
-import org.might.projman.model.CreateEditCommentViewModel;
-import org.might.projman.model.CreateEditProjectViewModel;
-import org.might.projman.model.CreateEditTaskViewModel;
-import org.might.projman.model.LoginFormViewModel;
+import org.might.projman.model.*;
 import org.might.projman.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
@@ -39,16 +38,19 @@ public class MainController {
     private final UserPreference userPreference;
     private final ProjectService projectService;
     private final UserService userService;
+    private final TaskService taskService;
 
     @Autowired
     public MainController(
             UserPreference userPreference,
             ProjectService projectService,
-            UserService userService
+            UserService userService,
+            TaskService taskService
     ) {
         this.userPreference = userPreference;
         this.projectService = projectService;
         this.userService = userService;
+        this.taskService = taskService;
     }
 
     @GetMapping(value = {"/"})
@@ -64,7 +66,22 @@ public class MainController {
         model.addAttribute(LOGIN_FORM_ATTR, new LoginFormViewModel());
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute("user_pref", userPreference);
-        model.addAttribute("projects", projectService.getAll());
+        List<Task> allTasks = taskService.getAll();
+        model.addAttribute("projects",
+                projectService.getAll()
+                        .stream()
+                        .map(
+                                project -> new ProjectStat(
+                                        project.getId(),
+                                        project.getName(),
+                                        project.getDescription(),
+                                        allTasks.size(),
+                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("Assigned")).count(),
+                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("In Progress")).count(),
+                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("Completed")).count()
+                                )
+                        ).collect(Collectors.toList())
+        );
         model.addAttribute("users", userService.getAll());
         return MAIN_FORM;
     }

@@ -88,7 +88,7 @@ public class ProjectController {
 
     @PostMapping(value = "create_task")
     public String createTask(@RequestParam("project_id") long projectId, @ModelAttribute(TASK_FORM_ATTR) CreateEditTaskViewModel taskViewModel) throws ParseException {
-        if (!taskService.getAll().stream().anyMatch(task -> task.getSubject().equals(taskViewModel.getName()))) {
+        if (taskService.getAll().stream().noneMatch(task -> task.getSubject().equals(taskViewModel.getName()))) {
             Task task = new Task();
             task.setSubject(taskViewModel.getName());
             task.setDescription(taskViewModel.getDescription());
