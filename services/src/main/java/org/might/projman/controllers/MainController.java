@@ -38,21 +38,17 @@ public class MainController {
 
     private final UserPreference userPreference;
     private final ProjectService projectService;
-    private final TaskService taskService;
     private final UserService userService;
 
     @Autowired
     public MainController(
             UserPreference userPreference,
             ProjectService projectService,
-            TaskService taskService,
             UserService userService
     ) {
         this.userPreference = userPreference;
         this.projectService = projectService;
-        this.taskService = taskService;
         this.userService = userService;
-        //DEBUG_generateStubProjects();
     }
 
     @GetMapping(value = {"/"})
@@ -70,18 +66,6 @@ public class MainController {
         model.addAttribute("user_pref", userPreference);
         model.addAttribute("projects", projectService.getAll());
         return MAIN_FORM;
-    }
-
-    private void DEBUG_removeStubProjects() {
-        projectService.getAll().stream().filter(project -> project.getId() != 1L).forEach(projectService::deleteProject);
-    }
-
-    private void DEBUG_generateStubProjects() {
-        IntStream.range(1, 10).forEach(order -> {Project project = new Project();
-            project.setName("Test project name " + order);
-            project.setDescription("Test project description " + order);
-            projectService.saveProject(project);
-        });
     }
 
     @PostMapping(value = "/createUser")
@@ -111,7 +95,7 @@ public class MainController {
         project.setName(projectViewModel.getName());
         project.setDescription(projectViewModel.getDescription());
         projectService.saveProject(project);
-        return MAIN_FORM;
+        return MAIN_REDIRECT;
     }
 
     @GetMapping(value = "/not_found")

@@ -225,7 +225,7 @@
 	<div class="modal fade" id="modalCreateProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-                <form action="#" class="login100-form validate-form" th:action="@{/main/createUser}" th:object="${loginFormViewModel}" method="post">
+                <form action="#" class="login100-form validate-form" th:action="@{/main/create_project}" th:object="${projectFormViewModel}" method="post">
                       <div class="modal-header text-center">
                           <h4 class="modal-title w-100 font-weight-bold">Creating New Project</h4>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -235,12 +235,12 @@
                       <div class="modal-body mx-3">
                           <div class="md-form mb-5">
                               <i class="fas fa-user prefix grey-text"></i>
-                              <input type="text" id="orangeForm-name" class="form-control validate" autocomplete="new-password">
+                              <input type="text" id="orangeForm-name" class="form-control validate" autocomplete="new-password" th:field="*{name}">
                               <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
                           </div>
                           <div class="md-form mb-5">
                               <i class="fas fa-lock prefix grey-text"></i>
-                              <textarea type="text" id="orangeForm-description" class="md-textarea form-control" rows="5"></textarea>
+                              <textarea type="text" id="orangeForm-description" class="md-textarea form-control" rows="5" th:field="*{description}"></textarea>
                               <label data-error="wrong" data-success="right" for="orangeForm-name">Description</label>
                           </div>
 						  <div class="md-form mb-5">
