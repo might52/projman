@@ -38,6 +38,7 @@ public class ProjectController {
     private final ProjectRoleService projectRoleService;
     private final StatusService statusService;
     private final RoleService roleService;
+    private final CommentService commentService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
@@ -46,7 +47,8 @@ public class ProjectController {
                              TaskService taskService,
                              ProjectRoleService projectRoleService,
                              StatusService statusService,
-                             RoleService roleService) {
+                             RoleService roleService,
+                             CommentService commentService) {
         this.userPreference = userPreference;
         this.userService = userService;
         this.projectService = projectService;
@@ -54,6 +56,7 @@ public class ProjectController {
         this.projectRoleService = projectRoleService;
         this.statusService = statusService;
         this.roleService = roleService;
+        this.commentService = commentService;
 
         if (statusService.getAll().isEmpty()) {
             new ArrayList<String>(3) {{
@@ -97,6 +100,10 @@ public class ProjectController {
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute(COMMENT_FORM_ATTR, new CreateEditCommentViewModel());
         model.addAttribute("task", task);
+
+        model.addAttribute("comments",
+                commentService.getAll().stream().filter(c -> c.getTaskId().getId().equals(taskID)).collect(Collectors.toList())
+        );
         return TASK_FORM;
     }
 
