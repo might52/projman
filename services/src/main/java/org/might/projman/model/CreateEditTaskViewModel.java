@@ -6,6 +6,7 @@ public class CreateEditTaskViewModel extends BaseEntityViewModel {
 
     private Long projectID;
     private String deadline;
+    private String account;
 
     public String getDeadline() {
         return deadline;
@@ -25,5 +26,13 @@ public class CreateEditTaskViewModel extends BaseEntityViewModel {
 
     public void setProjectID(Long projectID) {
         this.projectID = projectID;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 }
