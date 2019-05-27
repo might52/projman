@@ -78,10 +78,10 @@ public class MainController {
                                         project.getId(),
                                         project.getName(),
                                         project.getDescription(),
-                                        allTasks.size(),
-                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("Assigned")).count(),
-                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("In Progress")).count(),
-                                        allTasks.stream().filter(task -> task.getStatusId().getName().startsWith("Completed")).count(),
+                                        allTasks.stream().filter(t -> t.getProjectId().getId().equals(project.getId())).count(),
+                                        allTasks.stream().filter(task -> task.getProjectId().getId().equals(project.getId()) && task.getStatusId().getName().startsWith("Assigned")).count(),
+                                        allTasks.stream().filter(task -> task.getProjectId().getId().equals(project.getId()) && task.getStatusId().getName().startsWith("In Progress")).count(),
+                                        allTasks.stream().filter(task -> task.getProjectId().getId().equals(project.getId()) && task.getStatusId().getName().startsWith("Completed")).count(),
                                         getManagerName(project),
                                         projectRoleService.getAll().stream().filter(pr -> pr.getProjectId().getId().equals(project.getId())).count()
                                 )
@@ -118,13 +118,22 @@ public class MainController {
         project.setName(projectViewModel.getName());
         project.setDescription(projectViewModel.getDescription());
 
-        Optional<Role> role = roleService.getAll().stream().filter(r -> r.getName().startsWith("Manager")).findFirst();
+        Optional<Role> role = roleService.getAll()
+                .stream()
+                .filter(r -> r.getName().startsWith("Manager"))
+                .findFirst();
         ProjectRole projectRole = null;
         if (role.isPresent()) {
             projectRole = new ProjectRole();
             projectRole.setProjectId(project);
             projectRole.setRoleId(role.get());
-            projectRole.setUserId(userService.getUserById(userPreference.getUserID()));
+            Optional<User> userAccount = userService.getAll()
+                    .stream()
+                    .filter(u -> u.getAccount().equals(projectViewModel.getAccount()))
+                    .findFirst();
+            if (userAccount.isPresent()) {
+                projectRole.setUserId(userAccount.get());
+            }
         }
 
         projectService.saveProject(project);
