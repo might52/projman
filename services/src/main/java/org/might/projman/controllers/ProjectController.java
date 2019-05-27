@@ -25,6 +25,7 @@ public class ProjectController {
     private static final String MACROS_PROJECT_ID = "@{project_id}";
     private static final String PROJECT_REDIRECT = "redirect:/main/project_page?project_id=" + MACROS_PROJECT_ID;
 
+    private static final String TASK_FORM = "task_form.html";
 
     private static final String PROJECT_FORM_ATTR = "projectFormViewModel";
     private static final String TASK_FORM_ATTR = "taskFormViewModel";
@@ -96,7 +97,7 @@ public class ProjectController {
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute(COMMENT_FORM_ATTR, new CreateEditCommentViewModel());
         model.addAttribute("task", task);
-        return PROJECT_REDIRECT;
+        return TASK_FORM;
     }
 
     @PostMapping(value = "create_task")
