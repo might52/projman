@@ -52,8 +52,7 @@ public class MainController {
         this.projectService = projectService;
         this.taskService = taskService;
         this.userService = userService;
-        DEBUG_removeStubProjects();
-        DEBUG_generateStubProjects();
+        //DEBUG_generateStubProjects();
     }
 
     @GetMapping(value = {"/"})

@@ -1,5 +1,6 @@
 package org.might.projman.controllers;
 
+import com.sun.org.glassfish.external.statistics.Stats;
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.*;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -32,19 +36,29 @@ public class ProjectController {
     private final ProjectService projectService;
     private final TaskService taskService;
     private final ProjectRoleService projectRoleService;
+    private final StatusService statusService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
                              UserPreference userPreference,
                              UserService userService,
                              TaskService taskService,
-                             ProjectRoleService projectRoleService) {
+                             ProjectRoleService projectRoleService,
+                             StatusService statusService) {
         this.userPreference = userPreference;
         this.userService = userService;
         this.projectService = projectService;
         this.taskService = taskService;
         this.projectRoleService = projectRoleService;
+        this.statusService = statusService;
 
+        if (statusService.getAll().isEmpty()) {
+            new ArrayList<String>(3) {{
+               add("Assigned");
+               add("Completed");
+               add("In Progress");
+            }}.stream().map(this::createStatus).forEach(statusService::saveStatus);
+        }
     }
 
     @GetMapping(value = "/project_page")
@@ -69,15 +83,26 @@ public class ProjectController {
     }
 
     @PostMapping(value = "create_task")
-    public String createTask(@RequestParam("project_id") long projectId, @ModelAttribute(TASK_FORM_ATTR) CreateEditTaskViewModel taskViewModel) {
+    public String createTask(@RequestParam("project_id") long projectId, @ModelAttribute(TASK_FORM_ATTR) CreateEditTaskViewModel taskViewModel) throws ParseException {
         Task task = new Task();
         task.setSubject(taskViewModel.getName());
         task.setDescription(taskViewModel.getDescription());
         task.setProjectId(projectService.getProjectById(projectId));
         task.setCreatedBy(userService.getUserById(userPreference.getUserID()));
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        task.setDueDate(simpleDateFormat.parse(taskViewModel.getDeadline()));
+
         task.setCreationDate(new Date());
+        task.setStatusId(statusService.getAll().stream().filter(status -> status.getName().startsWith("Assigned")).collect(Collectors.toList()).get(0));
         taskService.saveTask(task);
         return PROJECT_REDIRECT.replace(MACROS_PROJECT_ID, projectId + "");
+    }
+
+    private Status createStatus(String name) {
+        Status status = new Status();
+        status.setName(name);
+        return status;
     }
 
 }
