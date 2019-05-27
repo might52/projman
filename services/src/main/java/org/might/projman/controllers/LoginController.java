@@ -65,18 +65,26 @@ public class LoginController {
         if (needToSave) {
             String pass = new BCryptPasswordEncoder().encode("test");
             User nik709 = new User();
+            nik709.setName("Nikita");
+            nik709.setSecondName("Grechukhin");
             nik709.setAccount("nik709");
             nik709.setPassword(pass);
 
             User might52 = new User();
+            might52.setName("Andrei");
+            might52.setSecondName("Fedotov");
             might52.setAccount("might52");
             might52.setPassword(pass);
 
             User VAGIK_BRAT_BRATAN_BRATISHKA = new User();
+            VAGIK_BRAT_BRATAN_BRATISHKA.setName("Vagik");
+            VAGIK_BRAT_BRATAN_BRATISHKA.setSecondName("Simonyan");
             VAGIK_BRAT_BRATAN_BRATISHKA.setAccount("Vagik");
             VAGIK_BRAT_BRATAN_BRATISHKA.setPassword(pass);
 
             User Vitalius = new User();
+            Vitalius.setName("Vitaliy");
+            Vitalius.setSecondName("Konevsky");
             Vitalius.setAccount("Vitaliy");
             Vitalius.setPassword(pass);
 

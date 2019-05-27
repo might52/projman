@@ -1,6 +1,5 @@
 package org.might.projman.controllers;
 
-import com.sun.org.glassfish.external.statistics.Stats;
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.*;
@@ -68,6 +67,7 @@ public class ProjectController {
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute("project", project);
+        model.addAttribute("users", userService.getAll());
         model.addAttribute("tasks",
                 taskService.getAll()
                         .stream()
