@@ -115,7 +115,7 @@
                                             <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" class="card-category" th:utext="${task.description}"></a>
                                         </div>
                                         <div class="card-body">
-                                            <div> th:utext="${task.assigneId.name} + ' ' + ${task.assigneId.secondName}"</div>
+                                            <div th:utext="${task.assigneId.name} + ' ' + ${task.assigneId.secondName}"></div>
                                         </div>
                                     </div>
                                 </tr>

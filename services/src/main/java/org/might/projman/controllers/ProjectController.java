@@ -2,10 +2,7 @@ package org.might.projman.controllers;
 
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
-import org.might.projman.dba.model.Project;
-import org.might.projman.dba.model.Role;
-import org.might.projman.dba.model.Status;
-import org.might.projman.dba.model.Task;
+import org.might.projman.dba.model.*;
 import org.might.projman.model.CreateEditCommentViewModel;
 import org.might.projman.model.CreateEditProjectViewModel;
 import org.might.projman.model.CreateEditTaskViewModel;

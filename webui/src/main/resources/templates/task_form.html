@@ -93,8 +93,13 @@
                                             </td>
                                             <td align="right">
                                                 <button class="btn btn-info" style="width: 130px; margin-right: 20px;">Log Work</button>
-                                                <button class="btn btn-primary" style="width: 130px;">Task Done</button>
-                                                <button class="btn btn-success" style="width: 130px;">Task In Progress</button>
+                                            </td>
+                                            <td align="right">
+                                                <div th:switch="${task.statusId.name}">
+                                                    <button class="btn btn-success" style="width: 130px;" th:case="Assigned">Task In Progress</button>
+                                                    <button class="btn btn-primary" style="width: 130px;" th:case="In Progress">Task Done</button>
+                                                    <button class="btn btn-success" style="width: 130px;" th:case="Completed">Task In Progress</button>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
