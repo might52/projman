@@ -140,16 +140,11 @@ public class MainController {
     }
 
     private String getManagerName(Project project) {
-        return projectRoleService.getAll()
+        List<ProjectRole> l = projectRoleService.getAll()
                 .stream()
                 .filter(r -> r.getProjectId().getId().equals(project.getId())
                         && r.getRoleId().getName().startsWith("Manager"))
-                .collect(Collectors.toList()).get(0).getUserId().getName()
-                + " "
-                + projectRoleService.getAll()
-                .stream()
-                .filter(r -> r.getProjectId().getId().equals(project.getId())
-                        && r.getRoleId().getName().startsWith("Manager"))
-                .collect(Collectors.toList()).get(0).getUserId().getSecondName();
+                .collect(Collectors.toList());
+        return l.isEmpty() ? "" : l.get(0).getUserId().getName() + " " + l.get(0).getUserId().getSecondName();
     }
 }
