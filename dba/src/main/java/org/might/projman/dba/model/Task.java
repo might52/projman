@@ -12,6 +12,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
     private String subject;
     private String description;
     @ManyToOne(targetEntity = Status.class)
@@ -130,9 +131,7 @@ public class Task {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return getSubject().equals(task.getSubject()) &&
-                getDescription().equals(task.getDescription()) &&
                 getProjectId().equals(task.getProjectId()) &&
-                getCreationDate().equals(task.getCreationDate());
+                getCreatedBy().equals(task.getCreatedBy());
     }
-
 }
