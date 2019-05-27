@@ -3,7 +3,6 @@ package org.might.projman.controllers;
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.Project;
-import org.might.projman.dba.model.Status;
 import org.might.projman.dba.model.Task;
 import org.might.projman.dba.model.User;
 import org.might.projman.model.CreateEditCommentViewModel;
@@ -25,15 +24,17 @@ import java.util.stream.IntStream;
 @Auth
 public class MainController {
 
+    // MAIN FORM
     private static final String MAIN_FORM = "main_form.html";
-    private static final String PROJECT_FORM = "project_form.html";
-    private static final String TASK_FORM = "task_form.html";
     private static final String MAIN_REDIRECT = "redirect:/main/main_page";
-    private static final String LOGIN_FORM_ATTR = "loginFormViewModel";
+
+    // TEMPLATES
     private static final String PROJECT_FORM_ATTR = "projectFormViewModel";
-    private static final String TASK_FORM_ATTR = "taskFormViewModel";
-    private static final String COMMENT_FORM_ATTR = "commentFormViewModel";
-    private static final String NOT_FOUND = "not_found.html";
+    private static final String TASK_FORM = "task_form.html";
+    private static final String NOT_FOUND_FORM = "not_found.html";
+
+    // VIEW MODELS
+    private static final String LOGIN_FORM_ATTR = "loginFormViewModel";
 
     private final UserPreference userPreference;
     private final ProjectService projectService;
@@ -53,8 +54,6 @@ public class MainController {
         this.userService = userService;
         DEBUG_removeStubProjects();
         DEBUG_generateStubProjects();
-        DEBUG_removeStubTasks();
-        DEBUG_generateStubTasks();
     }
 
     @GetMapping(value = {"/"})
@@ -78,25 +77,11 @@ public class MainController {
         projectService.getAll().stream().filter(project -> project.getId() != 1L).forEach(projectService::deleteProject);
     }
 
-    private void DEBUG_removeStubTasks() {
-        taskService.getAll().stream().filter(project -> project.getId() != 1L).forEach(taskService::deleteTask);
-    }
-
     private void DEBUG_generateStubProjects() {
         IntStream.range(1, 10).forEach(order -> {Project project = new Project();
             project.setName("Test project name " + order);
             project.setDescription("Test project description " + order);
             projectService.saveProject(project);
-        });
-    }
-
-    private void DEBUG_generateStubTasks() {
-        IntStream.range(1, 10).forEach(order -> {
-            Task task = new Task();
-            task.setId((long) order);
-            task.setSubject("Test task subject " + order);
-            task.setDescription("Test task description " + order);
-            taskService.saveTask(task);
         });
     }
 
@@ -121,29 +106,7 @@ public class MainController {
         return MAIN_REDIRECT;
     }
 
-    @GetMapping(value = "/project_page")
-    public String projectPage(@RequestParam("project_id") long projectId, Model model) {
-        model.addAttribute("user_pref", userPreference);
-        Project project = projectService.getProjectById(projectId);
-        model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
-        model.addAttribute(TASK_FORM_ATTR, new CreateEditProjectViewModel());
-        model.addAttribute("project", project);
-        model.addAttribute("projects_count", projectService.getAll().size());
-        model.addAttribute("tasks", taskService.getAll());
-        return PROJECT_FORM;
-    }
-
-    @GetMapping(value = "/task_page")
-    public String taskPage(@RequestParam("task_id") long taskID, Model model) {
-        model.addAttribute("user_pref", userPreference);
-        Task task = taskService.getTaskById(taskID);
-        model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
-        model.addAttribute(COMMENT_FORM_ATTR, new CreateEditCommentViewModel());
-        model.addAttribute("task", task);
-        return TASK_FORM;
-    }
-
-    @GetMapping(value = "create_project")
+    @PostMapping(value = "create_project")
     public String createProject(@ModelAttribute(PROJECT_FORM_ATTR) CreateEditProjectViewModel projectViewModel) {
         Project project = new Project();
         project.setName(projectViewModel.getName());
@@ -152,23 +115,8 @@ public class MainController {
         return MAIN_FORM;
     }
 
-    @GetMapping(value = "create_task")
-    public String createTask(@ModelAttribute(TASK_FORM_ATTR) CreateEditTaskViewModel taskViewModel) {
-        Task task = new Task();
-        task.setSubject(taskViewModel.getName());
-        task.setDescription(taskViewModel.getDescription());
-        task.setAssigneId(taskViewModel.getAssigneId());
-        task.setCreatedBy(userService.getUserById(userPreference.getUserID()));
-        task.setCreationDate(new Date());
-        task.setDueDate(taskViewModel.getDueDate());
-        task.setProjectId(taskViewModel.getProject());
-        task.setStatusId(taskViewModel.getStatus());
-        taskService.saveTask(task);
-        return PROJECT_FORM;
-    }
-
     @GetMapping(value = "/not_found")
     public String notFount() {
-        return NOT_FOUND;
+        return NOT_FOUND_FORM;
     }
 }

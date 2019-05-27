@@ -27,7 +27,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new HandlerInterceptor() {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-                if (response.getStatus() == 404) {
+                if (response.getStatus() == 404 || response.getStatus() == 405) {
                     response.sendRedirect("/main/not_found");
                 }
                 return true;
