@@ -64,10 +64,10 @@ public class Comment {
     @Override
     public String toString() {
         return "Comment{" +
-                "id=" + id +
-                ", createdBy=" + createdBy +
-                ", creationDate=" + creationDate +
-                ", description='" + description + '\'' +
+                "id=" + getId() +
+                ", createdBy=" + getCreatedBy() +
+                ", creationDate=" + getCreationDate() +
+                ", description='" + getDescription() + '\'' +
                 '}';
     }
 
@@ -77,7 +77,6 @@ public class Comment {
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
         return getCreatedBy().equals(comment.getCreatedBy()) &&
-                getCreationDate().equals(comment.getCreationDate()) &&
                 getDescription().equals(comment.getDescription());
     }
 
