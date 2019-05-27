@@ -1,6 +1,5 @@
 package org.might.projman.controllers;
 
-import com.sun.org.glassfish.external.statistics.Stats;
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.dba.model.*;
@@ -89,18 +88,20 @@ public class ProjectController {
 
     @PostMapping(value = "create_task")
     public String createTask(@RequestParam("project_id") long projectId, @ModelAttribute(TASK_FORM_ATTR) CreateEditTaskViewModel taskViewModel) throws ParseException {
-        Task task = new Task();
-        task.setSubject(taskViewModel.getName());
-        task.setDescription(taskViewModel.getDescription());
-        task.setProjectId(projectService.getProjectById(projectId));
-        task.setCreatedBy(userService.getUserById(userPreference.getUserID()));
+        if (!taskService.getAll().stream().anyMatch(task -> task.getSubject().equals(taskViewModel.getName()))) {
+            Task task = new Task();
+            task.setSubject(taskViewModel.getName());
+            task.setDescription(taskViewModel.getDescription());
+            task.setProjectId(projectService.getProjectById(projectId));
+            task.setCreatedBy(userService.getUserById(userPreference.getUserID()));
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        task.setDueDate(simpleDateFormat.parse(taskViewModel.getDeadline()));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            task.setDueDate(simpleDateFormat.parse(taskViewModel.getDeadline()));
 
-        task.setCreationDate(new Date());
-        task.setStatusId(statusService.getAll().stream().filter(status -> status.getName().startsWith("Assigned")).collect(Collectors.toList()).get(0));
-        taskService.saveTask(task);
+            task.setCreationDate(new Date());
+            task.setStatusId(statusService.getAll().stream().filter(status -> status.getName().startsWith("Assigned")).collect(Collectors.toList()).get(0));
+            taskService.saveTask(task);
+        }
         return PROJECT_REDIRECT.replace(MACROS_PROJECT_ID, projectId + "");
     }
 
