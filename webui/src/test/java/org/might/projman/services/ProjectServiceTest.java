@@ -46,6 +46,7 @@ public class ProjectServiceTest {
         projectService.getAll().forEach(proj -> System.out.println(
                 String.format("Prject name: %s, Project id: %s, Project desc: %s",
                         proj.getName(), proj.getId(), proj.getDescription())));
+        System.out.println(String.format("Created projects: %s", project));
         Assert.assertTrue(projectService.getAll().contains(project));
     }
 
@@ -124,6 +125,8 @@ public class ProjectServiceTest {
         projectService.saveProject(project);
 
         Project project_second = projectService.getProjectById(project.getId());
+
+        System.out.println(String.format("Updated project: %s", project));
 
         Assert.assertTrue(project_second.getName().equals(PROJECT_NAME_SECOND));
 

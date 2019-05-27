@@ -34,6 +34,7 @@ public class RoleServiceTest {
         cleanupDB();
         Role testRole = createRole();
         System.out.println(String.format("Roles count after creation: %s", roleService.getAll().size()));
+        System.out.println(String.format("Created role: %s", testRole));
         Role role = new Role();
         role.setName(TEST_ROLE);
         Assert.assertTrue(role.equals(testRole));

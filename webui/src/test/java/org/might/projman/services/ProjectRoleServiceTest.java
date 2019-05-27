@@ -84,10 +84,10 @@ public class ProjectRoleServiceTest {
             }
         });
 
-        System.out.println(String.format("count projectRoles before removing: %s", projectRoleService.getAll().size()));
-        System.out.println(String.format("count users before removing: %s", userService.getAll().size()));
-        System.out.println(String.format("count roles before removing: %s", roleService.getAll().size()));
-        System.out.println(String.format("count projects before removing: %s", projectService.getAll().size()));
+        System.out.println(String.format("count projectRoles after removing: %s", projectRoleService.getAll().size()));
+        System.out.println(String.format("count users after removing: %s", userService.getAll().size()));
+        System.out.println(String.format("count roles after removing: %s", roleService.getAll().size()));
+        System.out.println(String.format("count projects after removing: %s", projectService.getAll().size()));
 
         Assert.assertTrue(projectRoleService.getAll().size() == 0);
     }

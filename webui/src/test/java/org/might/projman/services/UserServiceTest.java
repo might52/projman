@@ -23,24 +23,25 @@ public class UserServiceTest {
 
     @Test
     public void addNewUser() {
-        System.out.println(String.format("User before cleanup count: %s", userService.getAll().size()));
+        System.out.println(String.format("User count before cleanup count: %s", userService.getAll().size()));
         cleanupDB();
-        System.out.println(String.format("User after cleanup count: %s", userService.getAll().size()));
+        System.out.println(String.format("User count after cleanup count: %s", userService.getAll().size()));
         User testUser = createUser();
-        System.out.println(String.format("User after creation count: %s", userService.getAll().size()));
+        System.out.println(String.format("User count after creation count: %s", userService.getAll().size()));
+        System.out.println(String.format("Created user: %s", testUser));
         Assert.assertTrue(getEtalonUser(TEST_USER).equals(testUser));
     }
 
     @Test
     public void removeCreatedUser() {
-        System.out.println(String.format("User before removing count: %s", userService.getAll().size()));
+        System.out.println(String.format("User count before removing count: %s", userService.getAll().size()));
         User createdUser = getEtalonUser(TEST_USER);
         userService.getAll().forEach(el -> {
             if (el.equals(createdUser)) {
                 userService.deleteUser(el);
             }
         });
-        System.out.println(String.format("User after removing: %s", userService.getAll().size()));
+        System.out.println(String.format("User count after removing: %s", userService.getAll().size()));
         Assert.assertTrue(userService.getAll().size() == 0);
     }
 
@@ -54,6 +55,8 @@ public class UserServiceTest {
         updatedUser.setPassword(TEST_USER_UPDATED);
         userService.saveUser(updatedUser);
         User etalonForUpdateUser = getEtalonUser(TEST_USER_UPDATED);
+        System.out.println(String.format("User count: %s", userService.getAll().size()));
+        System.out.println(String.format("User updated: %s", updatedUser));
         Assert.assertTrue(userService.getUserById(updatedUser.getId()).equals(etalonForUpdateUser));
     }
 

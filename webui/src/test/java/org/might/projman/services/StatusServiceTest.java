@@ -31,6 +31,7 @@ public class StatusServiceTest {
         System.out.println(String.format("Status count after cleanup: %s", statusService.getAll().size()));
         Status status = createStatus();
         System.out.println(String.format("Status count after creation new one: %s", statusService.getAll().size()));
+        System.out.println(String.format("Status created: %s", status));
         statusService.getAll().forEach(el -> {
             if (el.equals(status)) {
                 Assert.assertTrue(el.equals(status));
@@ -44,11 +45,13 @@ public class StatusServiceTest {
         System.out.println(String.format("Status count: %s", statusService.getAll().size()));
         Status status = new Status();
         status.setName(TEST_STATUS);
-        Assert.assertTrue(statusService
+        statusService
                 .getAll()
                 .stream()
                 .filter(el -> el.equals(status))
-                .count() == 1);
+                .forEach(el -> statusService.deleteStatus(el));
+        Assert.assertTrue(statusService.getAll().size() == 0);
+        System.out.println(String.format("Status count after removing: %s", statusService.getAll().size()));
     }
 
     private void cleanupDB() {

@@ -118,7 +118,7 @@ public class CommentServiceTest {
         commentService.saveComment(comment);
 
         System.out.println(String.format("Comments count after creation: %s", commentService.getAll().size()));
-        System.out.println(String.format("Comments created: %s", commentService.getCommentById(comment.getId())));
+        System.out.println(String.format("Comments changed: %s", commentService.getCommentById(comment.getId())));
 
         Assert.assertTrue(commentService.getAll().size() == 1 &&
                 commentService.getCommentById(comment.getId()).getDescription().equals(TEST_COMMENT_SECOND));
@@ -165,7 +165,7 @@ public class CommentServiceTest {
                 .collect(Collectors.toList())
                 .get(0);
         commentService.deleteComment(comment);
-        System.out.println(String.format("Comments count after creation: %s", commentService.getAll().size()));
+        System.out.println(String.format("Comments count after removing: %s", commentService.getAll().size()));
 
         Assert.assertTrue(commentService.getAll().size() == 0);
     }
