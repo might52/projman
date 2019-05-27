@@ -80,6 +80,7 @@ public class ProjectController {
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute("project", project);
+        model.addAttribute("projects_number", projectService.getAll().size());
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tasks",
                 taskService.getAll()
@@ -97,6 +98,7 @@ public class ProjectController {
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute(COMMENT_FORM_ATTR, new CreateEditCommentViewModel());
         model.addAttribute("task", task);
+        model.addAttribute("projects_number", projectService.getAll().size());
         return TASK_FORM;
     }
 

@@ -46,9 +46,7 @@
                                 </div>
                             </li>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"><i class="ti-settings"></i>Account Setting</a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalRegisterForm">New User</a>
+                            <a class="dropdown-item" href="#"><i class="ti-settings"></i>Account Settings</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/main/logout"><i class="fa fa-power-off"></i>Logout</a>
                         </ul>
@@ -64,7 +62,7 @@
                     <a th:href="@{/main/main_page}">
                         <i class="la la-dashboard"></i>
                         <p>Projects</p>
-                        <span class="badge badge-count" th:utext="${projects_count}"></span>
+                        <span class="badge badge-count" th:utext="${projects_number}"></span>
                     </a>
                 </li>
                 <li class="nav-item">
