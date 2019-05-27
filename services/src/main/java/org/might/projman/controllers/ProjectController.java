@@ -2,8 +2,7 @@ package org.might.projman.controllers;
 
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
-import org.might.projman.dba.model.Project;
-import org.might.projman.dba.model.Task;
+import org.might.projman.dba.model.*;
 import org.might.projman.model.*;
 import org.might.projman.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/main")
@@ -31,16 +31,20 @@ public class ProjectController {
     private final UserService userService;
     private final ProjectService projectService;
     private final TaskService taskService;
+    private final ProjectRoleService projectRoleService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
                              UserPreference userPreference,
+                             UserService userService,
                              TaskService taskService,
-                             UserService userService) {
+                             ProjectRoleService projectRoleService) {
         this.userPreference = userPreference;
         this.userService = userService;
         this.projectService = projectService;
         this.taskService = taskService;
+        this.projectRoleService = projectRoleService;
+
     }
 
     @GetMapping(value = "/project_page")
@@ -50,7 +54,7 @@ public class ProjectController {
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute("project", project);
-        model.addAttribute("tasks", taskService.getAll());
+        model.addAttribute("tasks", taskService.getAll().stream().filter(task -> task.getProjectId() != null && task.getProjectId().getId() == projectId).collect(Collectors.toList()));
         return PROJECT_FORM;
     }
 
