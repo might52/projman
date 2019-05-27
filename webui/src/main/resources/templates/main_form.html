@@ -79,7 +79,7 @@
                     <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalRegisterForm">New User</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalCreateProjectForm">New Project</a>
+                    <a href="#" class="dropdown-item" id="create_new_proj_button" data-toggle="modal" data-target="#modalCreateProjectForm">New Project</a>
                 </li>
             </ul>
         </div>
@@ -95,6 +95,9 @@
                             <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-header">
+                                        <a href="#" data-toggle="modal" class="editButton" id="editProject" data-target="#modalCreateProjectForm">
+                                            <i class="la la-gear text-primary"></i>
+                                        </a>
                                         <h4 class="card-title" th:utext="${project.name}"></h4>
                                         <a th:href="@{/main/project_page?project_id={id}(id=${project.id})}" class="card-category" >View Project</a>
                                     </div>
@@ -221,7 +224,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal fade" id="modalCreateProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -235,18 +238,18 @@
                       <div class="modal-body mx-3">
                           <div class="md-form mb-5">
                               <i class="fas fa-user prefix grey-text"></i>
-                              <input required type="text" id="orangeForm-name" class="form-control validate" autocomplete="new-password" th:field="*{name}">
+                              <input required type="text" id="create_edit_project_name" class="form-control validate" autocomplete="new-password" th:field="*{name}">
                               <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
                           </div>
                           <div class="md-form mb-5">
                               <i class="fas fa-lock prefix grey-text"></i>
-                              <textarea required type="text" id="orangeForm-description" class="md-textarea form-control" rows="5" th:field="*{description}"></textarea>
+                              <textarea required type="text" id="create_edit_project_description" class="md-textarea form-control" rows="5" th:field="*{description}"></textarea>
                               <label data-error="wrong" data-success="right" for="orangeForm-name">Description</label>
                           </div>
 						  <div class="md-form mb-5">
                               <i class="fas fa-user prefix grey-text"></i>
                               <label data-error="wrong" data-success="right" for="orangeForm-name">Assign to</label>
-                              <select th:field="*{account}">
+                              <select th:field="*{account}" id="create_edit_project_assigned">
                                   <option value=""> Select user </option>
                                   <option th:each="user : ${users}"
                                           th:value="${user.account}"
@@ -256,7 +259,7 @@
                           </div>
                       </div>
                       <div class="modal-footer d-flex justify-content-center">
-                          <button class="btn btn-deep-orange">Create</button>
+                          <button class="btn btn-deep-orange" id="create_edit_proj_button">Create</button>
                       </div>
                 </form>
 			</div>
@@ -276,6 +279,40 @@
 <script th:src="@{/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
 <script th:src="@{/js/ready.min.js}"></script>
 <script>
+	$('body').on('click', '.editButton', (e) => {
+		console.log("1");
+		let parent = $(e.currentTarget).parent();
+		let projName = $(parent).find('.card-title').html();
+        //console.log(projName);
+
+		let pparent = $(parent).parent();
+		let projDescr = $(pparent).find('#task-complete').html();
+		//console.log(projDescr);
+		let assignedTo = $(pparent).find('.legend').html();
+		//console.log(assignedTo);
+
+		$('#create_edit_project_name').val(projName);
+		$('#create_edit_project_description').val(projDescr);
+		$('#create_edit_project_assigned').val($('#create_edit_project_assigned option').filter(function(){
+		    return $(this).html()==assignedTo;
+		}).val());
+
+		//$('#create_edit_project_assigned option').filter(function(){
+		//    return $(this).html()=="Andrei Fedotov";
+		//}).val();
+
+		$('#create_edit_proj_button').html("Update")
+
+
+	});
+
+	$('body').on('click', '#create_new_proj_button', (e) => {
+	    $('#create_edit_project_name').val("");
+		$('#create_edit_project_description').val("");
+		$('#create_edit_project_assigned').val("");
+		$('#create_edit_proj_button').html("Create")
+	});
+
 	search_input.oninput = function()
 	{
 		$.ajax({
@@ -291,14 +328,17 @@
                             <div class="col-md-3">\
 						        <div class="card">\
                                     <div class="card-header">\
-                                        <h4 class="card-title" text="${item.name}"></h4>\
-                                        <a href="/main/project_page?project_id=' + item.id +'" class="card-category">' + View Project + '</a>\
+                                        <a href="#" data-toggle="modal" class="editButton" id="editProject" data-target="#modalCreateProjectForm">\
+                                            <i class="la la-gear text-primary"></i>\
+                                        </a>\
+                                        <h4 class="card-title">' + item.name + '</h4>\
+                                        <a href="/main/project_page?project_id=' + item.id +'" class="card-category" >View Project</a>\
                                     </div>\
                                     <div class="card-body">\
                                         <div id="task-complete">' + item.description + '</div>\
                                     </div>\
                                     <div class="card-footer">\
-                                        <div class="legend">Manager Name</div>\
+                                        <div class="legend">'+ item.managerName +'</div>\
                                     </div>\
                                 </div>\
                             </div>\
@@ -371,7 +411,7 @@
                                             <div class="col-7 d-flex align-items-center">\
                                                 <div class="numbers">\
                                                     <p class="card-category">Employees</p>\
-                                                    <h4 class="card-title">17</h4>\
+                                                    <h4 class="card-title">'+ item.employeeCount +'</h4>\
                                                 </div>\
                                             </div>\
                                         </div>\

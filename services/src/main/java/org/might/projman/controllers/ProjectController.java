@@ -2,8 +2,13 @@ package org.might.projman.controllers;
 
 import org.might.projman.UserPreference;
 import org.might.projman.controllers.annotations.Auth;
-import org.might.projman.dba.model.*;
-import org.might.projman.model.*;
+import org.might.projman.dba.model.Project;
+import org.might.projman.dba.model.Role;
+import org.might.projman.dba.model.Status;
+import org.might.projman.dba.model.Task;
+import org.might.projman.model.CreateEditCommentViewModel;
+import org.might.projman.model.CreateEditProjectViewModel;
+import org.might.projman.model.CreateEditTaskViewModel;
 import org.might.projman.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +43,7 @@ public class ProjectController {
     private final ProjectRoleService projectRoleService;
     private final StatusService statusService;
     private final RoleService roleService;
+    private final CommentService commentService;
 
     @Autowired
     public ProjectController(ProjectService projectService,
@@ -46,7 +52,8 @@ public class ProjectController {
                              TaskService taskService,
                              ProjectRoleService projectRoleService,
                              StatusService statusService,
-                             RoleService roleService) {
+                             RoleService roleService,
+                             CommentService commentService) {
         this.userPreference = userPreference;
         this.userService = userService;
         this.projectService = projectService;
@@ -54,12 +61,13 @@ public class ProjectController {
         this.projectRoleService = projectRoleService;
         this.statusService = statusService;
         this.roleService = roleService;
+        this.commentService = commentService;
 
         if (statusService.getAll().isEmpty()) {
             new ArrayList<String>(3) {{
-               add("Assigned");
-               add("Completed");
-               add("In Progress");
+                add("Assigned");
+                add("Completed");
+                add("In Progress");
             }}.stream().map(this::createStatus).forEach(statusService::saveStatus);
         }
 
@@ -99,6 +107,9 @@ public class ProjectController {
         model.addAttribute(COMMENT_FORM_ATTR, new CreateEditCommentViewModel());
         model.addAttribute("task", task);
         model.addAttribute("projects_number", projectService.getAll().size());
+        model.addAttribute("comments",
+                commentService.getAll().stream().filter(c -> c.getTaskId().getId().equals(taskID)).collect(Collectors.toList())
+        );
         return TASK_FORM;
     }
 
