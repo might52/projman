@@ -111,7 +111,7 @@
                         <div class="col-md-3">
                             <table border="1">
                                 <tr th:each="task : ${tasks}">
-                                    <div class="card" th:if="${task.id % 3 == 0}">
+                                    <div class="card" th:if="${task.statusId.name == 'Assigned'}">
                                         <div class="card-header">
                                             <h4 class="card-title" th:utext="${task.subject}"></h4>
                                             <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" class="card-category" th:utext="${task.description}"></a>
@@ -126,7 +126,7 @@
                         <div class="col-md-3">
                             <table border="1">
                                 <tr th:each="task : ${tasks}">
-                                    <div class="card"  th:if="${task.id % 2 == 0}">
+                                    <div class="card"  th:if="${task.statusId.name == 'In Progress'}">
                                         <div class="card-header">
                                             <h4 class="card-title" th:utext="${task.subject}"></h4>
                                             <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" class="card-category" th:utext="${task.description}"></a>
@@ -141,7 +141,7 @@
                         <div class="col-md-3">
                             <table border="1">
                                 <tr th:each="task : ${tasks}">
-                                    <div class="card"  th:if="${task.id % 4 == 0}">
+                                    <div class="card"  th:if="${task.statusId.name == 'Completed'}">
                                         <div class="card-header">
                                             <h4 class="card-title" th:utext="${task.subject}"></h4>
                                             <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" class="card-category" th:utext="${task.description}"></a>

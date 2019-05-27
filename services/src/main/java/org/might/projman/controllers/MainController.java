@@ -65,6 +65,7 @@ public class MainController {
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute("user_pref", userPreference);
         model.addAttribute("projects", projectService.getAll());
+        model.addAttribute("users", userService.getAll());
         return MAIN_FORM;
     }
 

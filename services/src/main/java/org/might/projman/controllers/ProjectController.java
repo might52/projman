@@ -68,7 +68,12 @@ public class ProjectController {
         model.addAttribute(PROJECT_FORM_ATTR, new CreateEditProjectViewModel());
         model.addAttribute(TASK_FORM_ATTR, new CreateEditTaskViewModel());
         model.addAttribute("project", project);
-        model.addAttribute("tasks", taskService.getAll().stream().filter(task -> task.getProjectId() != null && task.getProjectId().getId() == projectId).collect(Collectors.toList()));
+        model.addAttribute("tasks",
+                taskService.getAll()
+                        .stream()
+                        .filter(task -> task.getProjectId() != null && task.getProjectId().getId() == projectId)
+                        .collect(Collectors.toList())
+        );
         return PROJECT_FORM;
     }
 
