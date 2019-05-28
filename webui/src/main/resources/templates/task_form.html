@@ -105,7 +105,47 @@
                                     </table>
                                 </div>
                                 <div class="card-body">
-                                    <p class="card-category" th:utext="${task.subject}"></p>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 80%">
+                                                <p class="card-category" th:utext="${task.subject}"></p>
+                                            </td>
+                                            <td style="width: 20%">
+                                                <h2 class="card-title"> People </h2>
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 40%">
+                                                            <div>Assignee: </div>
+                                                            <div style="color: #FFFFFF;">:-)</div>
+                                                            <div>Reporter: </div>
+                                                        </td>
+                                                        <td style="width: 60%">
+                                                            <div th:utext="${task.assigneId.name} + ' ' + ${task.assigneId.secondName}"></div>
+                                                            <a href="#">Assign to me</a>
+                                                            <div th:utext="${task.createdBy.name} + ' ' + ${task.createdBy.secondName}"></div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <p></p>
+                                                <h2 class="card-title"> Dates </h2>
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 40%">
+                                                            <div>Created: </div>
+                                                            <div>Due: </div>
+                                                            <div>Logged: </div>
+                                                        </td>
+                                                        <td style="width: 60%">
+                                                            <div th:utext="${task.creationDate}"></div>
+                                                            <div th:utext="${task.dueDate}"></div>
+                                                            <div th:utext="${task.usedTime} + 'h'"></div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>

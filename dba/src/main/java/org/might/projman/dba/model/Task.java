@@ -14,6 +14,7 @@ public class Task {
     private Long id;
     @Column(unique = true, nullable = false)
     private String subject;
+    @Column(nullable = false, length = 1000)
     private String description;
     @ManyToOne(targetEntity = Status.class, optional = false)
     private Status statusId;
