@@ -76,7 +76,7 @@
             <hr align="left" width="100%" size="4" color="#6c757d" />
             <ul class="nav">
                 <li class="nav-item">
-                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalCreateTaskForm">New Task</a>
+                    <a th:if="${!user_pref.admin}" href="#" class="dropdown-item" data-toggle="modal" data-target="#modalCreateTaskForm">New Task</a>
                 </li>
             </ul>
         </div>

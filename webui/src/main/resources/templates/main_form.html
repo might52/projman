@@ -95,7 +95,7 @@
                             <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-header">
-                                        <a href="#" data-toggle="modal" class="editButton" id="editProject" data-target="#modalCreateProjectForm">
+                                        <a href="#" data-toggle="modal" class="editButton" id="editProject" data-target="#modalEditProjectForm">
                                             <i class="la la-gear text-primary"></i>
                                         </a>
                                         <h4 class="card-title" th:utext="${project.name}"></h4>
@@ -208,8 +208,18 @@
                       <div class="modal-body mx-3">
                           <div class="md-form mb-5">
                               <i class="fas fa-user prefix grey-text"></i>
-                              <input required type="text" id="orangeForm-name" class="form-control validate" th:field="*{login}" autocomplete="new-password">
+                              <input required type="text" id="orangeForm-login" class="form-control validate" th:field="*{login}" autocomplete="new-password">
                               <label data-error="wrong" data-success="right" for="orangeForm-name">User login</label>
+                          </div>
+                          <div class="md-form mb-5">
+                              <i class="fas fa-user prefix grey-text"></i>
+                              <input required type="text" id="orangeForm-name" class="form-control validate"  autocomplete="new-password">
+                              <label data-error="wrong" data-success="right" for="orangeForm-name">First Name</label>
+                          </div>
+                          <div class="md-form mb-5">
+                              <i class="fas fa-user prefix grey-text"></i>
+                              <input required type="text" id="orangeForm-second-name" class="form-control validate"  autocomplete="new-password">
+                              <label data-error="wrong" data-success="right" for="orangeForm-name">Second Name</label>
                           </div>
                           <div class="md-form mb-4">
                               <i class="fas fa-lock prefix grey-text"></i>
@@ -265,6 +275,47 @@
 			</div>
 		</div>
 	</div>
+
+    <div class="modal fade" id="modalEditProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="#" class="login100-form validate-form" th:action="@{/main/create_project}" th:object="${projectFormViewModel}" method="post">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Changing Project</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input required type="text" id="edit_project_name" class="form-control validate" autocomplete="new-password" th:field="*{name}">
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-lock prefix grey-text"></i>
+                            <textarea required type="text" id="edit_project_description" class="md-textarea form-control" rows="5" th:field="*{description}"></textarea>
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Description</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Assign to</label>
+                            <select th:field="*{account}" id="edit_project_assigned">
+                                <option value=""> Select user </option>
+                                <option th:each="user : ${users}"
+                                        th:value="${user.account}"
+                                        th:utext="${user.name} + ' ' + ${user.secondName}">\
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-deep-orange" id="edit_proj_button">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 
@@ -280,7 +331,6 @@
 <script th:src="@{/js/ready.min.js}"></script>
 <script>
 	$('body').on('click', '.editButton', (e) => {
-		console.log("1");
 		let parent = $(e.currentTarget).parent();
 		let projName = $(parent).find('.card-title').html();
         //console.log(projName);
@@ -291,27 +341,19 @@
 		let assignedTo = $(pparent).find('.legend').html();
 		//console.log(assignedTo);
 
-		$('#create_edit_project_name').val(projName);
-		$('#create_edit_project_description').val(projDescr);
-		$('#create_edit_project_assigned').val($('#create_edit_project_assigned option').filter(function(){
+		$('#edit_project_name').val(projName);
+		$('#edit_project_description').val(projDescr);
+		$('#edit_project_assigned').val($('#edit_project_assigned option').filter(function(){
 		    return $(this).html()==assignedTo;
 		}).val());
-
-		//$('#create_edit_project_assigned option').filter(function(){
-		//    return $(this).html()=="Andrei Fedotov";
-		//}).val();
-
-		$('#create_edit_proj_button').html("Update")
-
-
 	});
 
-	$('body').on('click', '#create_new_proj_button', (e) => {
-	    $('#create_edit_project_name').val("");
-		$('#create_edit_project_description').val("");
-		$('#create_edit_project_assigned').val("");
-		$('#create_edit_proj_button').html("Create")
-	});
+	/*$('body').on('click', '#create_new_proj_button', (e) => {
+	    $('#edit_project_name').val("");
+		$('#edit_project_description').val("");
+		$('#edit_project_assigned').val("");
+		$('#edit_proj_button').html("Create")
+	});*/
 
 	search_input.oninput = function()
 	{

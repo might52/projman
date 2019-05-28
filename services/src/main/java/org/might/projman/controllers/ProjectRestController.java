@@ -5,7 +5,6 @@ import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.controllers.dtos.ProjectDTOResponse;
 import org.might.projman.dba.model.*;
 import org.might.projman.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
