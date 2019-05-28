@@ -103,6 +103,18 @@ public class MainController {
             user.setName(loginFormViewModel.getFirstName());
             user.setSecondName(loginFormViewModel.getSecondName());
             userService.saveUser(user);
+
+            Optional<Role> role = roleService.getAll().stream().filter(r -> r.getName().equals("Employee")).findFirst();
+
+            projectService.getAll().forEach(project -> {
+                ProjectRole projectRole = new ProjectRole();
+                role.ifPresent(projectRole::setRoleId);
+                projectRole.setUserId(user);
+                projectRole.setProjectId(project);
+                projectRoleService.saveProjectRole(projectRole);
+            });
+
+
         }
         return MAIN_REDIRECT;
     }
