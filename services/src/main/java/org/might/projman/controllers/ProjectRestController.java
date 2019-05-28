@@ -135,4 +135,25 @@ public class ProjectRestController {
         return "ok";
     }
 
+    @GetMapping(value = "/update_role")
+    public String updateRole(
+            @RequestParam("user_id") long userID,
+            @RequestParam("role_id") long roleID,
+            @RequestParam("project_id") long projectID) {
+        User user = userService.getUserById(userID);
+        Role role = roleService.getRoleById(roleID);
+        Project project = projectService.getProjectById(projectID);
+
+        Optional<ProjectRole> projectRole = projectRoleService.getAll().stream().filter(
+                pr -> pr.getProjectId().equals(project) && pr.getUserId().equals(user)
+        ).findFirst();
+
+        projectRole.ifPresent(c -> {
+            c.setRoleId(role);
+            projectRoleService.saveProjectRole(c);
+        });
+
+        return "ok";
+    }
+
 }
