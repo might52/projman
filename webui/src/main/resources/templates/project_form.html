@@ -111,8 +111,8 @@
                                 <tr th:each="task : ${tasks}">
                                     <div class="card" th:if="${task.statusId.name == 'Assigned'}">
                                         <div class="card-header">
-                                            <h4 class="card-title" th:utext="${task.subject}"></h4>
-                                            <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" class="card-category" th:utext="${task.description}"></a>
+                                            <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}"><h4 class="card-title" th:utext="${task.subject}"></h4></a>
+                                            <a class="card-category" th:utext="${task.description}"></a>
                                         </div>
                                         <div class="card-body">
                                             <div th:utext="${task.assigneId.name} + ' ' + ${task.assigneId.secondName}"></div>
@@ -126,8 +126,8 @@
                                 <tr th:each="task : ${tasks}">
                                     <div class="card"  th:if="${task.statusId.name == 'In Progress'}">
                                         <div class="card-header">
-                                            <h4 class="card-title" th:utext="${task.subject}"></h4>
-                                            <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" class="card-category" th:utext="${task.description}"></a>
+                                            <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" ><h4 class="card-title" th:utext="${task.subject}"></h4></a>
+                                            <a class="card-category" th:utext="${task.description}"></a>
                                         </div>
                                         <div class="card-body">
                                             <div>Assigned...</div>
@@ -141,8 +141,8 @@
                                 <tr th:each="task : ${tasks}">
                                     <div class="card"  th:if="${task.statusId.name == 'Completed'}">
                                         <div class="card-header">
-                                            <h4 class="card-title" th:utext="${task.subject}"></h4>
-                                            <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}" class="card-category" th:utext="${task.description}"></a>
+                                            <a th:href="@{/main/task_page?task_id={id}(id=${task.id})}"><h4 class="card-title" th:utext="${task.subject}"></h4></a>
+                                            <a class="card-category" th:utext="${task.description}"></a>
                                         </div>
                                         <div class="card-body">
                                             <div>Assigned...</div>
