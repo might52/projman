@@ -4,11 +4,9 @@ package org.might.projman.controllers;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.controllers.dtos.ProjectDTOResponse;
 import org.might.projman.dba.model.*;
-import org.might.projman.model.CreateEditProjectViewModel;
 import org.might.projman.services.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

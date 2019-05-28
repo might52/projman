@@ -100,6 +100,8 @@ public class MainController {
             User user = new User();
             user.setAccount(login);
             user.setPassword(password);
+            user.setName(loginFormViewModel.getFirstName());
+            user.setSecondName(loginFormViewModel.getSecondName());
             userService.saveUser(user);
         }
         return MAIN_REDIRECT;

@@ -29,6 +29,8 @@ public class ProjectController {
     private static final String PROJECT_REDIRECT = "redirect:/main/project_page?project_id=" + MACROS_PROJECT_ID;
 
     private static final String TASK_FORM = "task_form.html";
+    private static final String MACROS_TASK_ID = "@{task_id}";
+    private static final String TASK_REDIRECT = "redirect:/main/task_page?task_id=" + MACROS_TASK_ID;
 
     private static final String PROJECT_FORM_ATTR = "projectFormViewModel";
     private static final String TASK_FORM_ATTR = "taskFormViewModel";
@@ -135,6 +137,14 @@ public class ProjectController {
             taskService.saveTask(task);
         }
         return PROJECT_REDIRECT.replace(MACROS_PROJECT_ID, projectId + "");
+    }
+
+    @GetMapping(value = "/assign_to_me")
+    public String assignToMe(@RequestParam("task_id") long taskId) {
+        Task task = taskService.getTaskById(taskId);
+        task.setAssigneId(userService.getUserById(userPreference.getUserID()));
+        taskService.saveTask(task);
+        return TASK_REDIRECT.replace(MACROS_TASK_ID, taskId + "");
     }
 
     private Status createStatus(String name) {

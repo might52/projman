@@ -111,7 +111,7 @@
                                                         </td>
                                                         <td style="width: 60%">
                                                             <div th:utext="${task.assigneId.name} + ' ' + ${task.assigneId.secondName}"></div>
-                                                            <a href="#">Assign to me</a>
+                                                            <a th:href="@{/main/assign_to_me?task_id={id}(id=${task.id})}">Assign to me</a>
                                                             <div th:utext="${task.createdBy.name} + ' ' + ${task.createdBy.secondName}"></div>
                                                         </td>
                                                     </tr>
