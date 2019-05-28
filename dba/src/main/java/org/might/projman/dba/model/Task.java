@@ -12,18 +12,20 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String subject;
     private String description;
-    @ManyToOne(targetEntity = Status.class)
+    @ManyToOne(targetEntity = Status.class, optional = false)
     private Status statusId;
-    @ManyToOne(targetEntity = Project.class)
+    @ManyToOne(targetEntity = Project.class, optional = false)
     private Project projectId;
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class, optional = false)
     private User assigneId;
+    @Column(nullable = false)
     private Date dueDate;
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class,  optional = false)
     private User createdBy;
+    @Column(nullable = false)
     private Date creationDate;
     private Date usedTime;
 

@@ -2,6 +2,7 @@ package org.might.projman.dba.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -11,11 +12,13 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(targetEntity = Task.class)
+    @ManyToOne(targetEntity = Task.class, optional = false)
     private Task taskId;
-    @OneToOne(targetEntity = User.class)
+    @OneToOne(targetEntity = User.class, optional = false)
     private User createdBy;
+    @Column(nullable = false)
     private Date creationDate;
+    @Column(nullable = false)
     private String description;
 
     public Comment() {
@@ -64,10 +67,10 @@ public class Comment {
     @Override
     public String toString() {
         return "Comment{" +
-                "id=" + id +
-                ", createdBy=" + createdBy +
-                ", creationDate=" + creationDate +
-                ", description='" + description + '\'' +
+                "id=" + getId() +
+                ", createdBy=" + getCreatedBy() +
+                ", creationDate=" + getCreationDate() +
+                ", description='" + getDescription() + '\'' +
                 '}';
     }
 
@@ -77,7 +80,6 @@ public class Comment {
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
         return getCreatedBy().equals(comment.getCreatedBy()) &&
-                getCreationDate().equals(comment.getCreationDate()) &&
                 getDescription().equals(comment.getDescription());
     }
 
