@@ -76,10 +76,10 @@
 			<hr align="left" width="100%" size="4" color="#6c757d" />
 			<ul class="nav">
                 <li class="nav-item">
-                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalRegisterForm">New User</a>
+                    <a th:if="${user_pref.admin}" href="#" class="dropdown-item" data-toggle="modal" data-target="#modalRegisterForm">New User</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="dropdown-item" id="create_new_proj_button" data-toggle="modal" data-target="#modalCreateProjectForm">New Project</a>
+                    <a th:if="${user_pref.admin}" href="#" class="dropdown-item" id="create_new_proj_button" data-toggle="modal" data-target="#modalCreateProjectForm">New Project</a>
                 </li>
             </ul>
         </div>
