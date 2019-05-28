@@ -65,6 +65,13 @@ public class LoginController {
                         || user.getAccount().startsWith("Vitaliy")
                         || user.getAccount().startsWith("might52")
                 );
+                Optional<ProjectRole> manager = projectRoleService.getAll()
+                        .stream()
+                        .filter(
+                                projectRole -> projectRole.getUserId().equals(user)
+                                        && projectRole.getRoleId().getName().equals("Manager"))
+                        .findFirst();
+                userPreference.setManager(manager.isPresent());
                 break;
             }
         }

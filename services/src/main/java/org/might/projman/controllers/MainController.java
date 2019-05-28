@@ -177,9 +177,16 @@ public class MainController {
                     projectRoleService.saveProjectRole(anotherProjectRole);
                 }
             });
-
-
         }
+
+        Optional<ProjectRole> manager = projectRoleService.getAll()
+                .stream()
+                .filter(
+                        projectRole1 -> projectRole1.getUserId().equals(userService.getUserById(userPreference.getUserID()))
+                                && projectRole1.getRoleId().getName().equals("Manager"))
+                .findFirst();
+        userPreference.setManager(manager.isPresent());
+
         return MAIN_REDIRECT;
     }
 

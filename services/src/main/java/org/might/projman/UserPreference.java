@@ -7,6 +7,7 @@ public class UserPreference {
     private String userLogin;
 
     private boolean admin;
+    private boolean manager;
 
     public void setUserID(long userID) {
         this.userID = userID;
@@ -30,5 +31,13 @@ public class UserPreference {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isManager() {
+        return manager;
+    }
+
+    public void setManager(boolean manager) {
+        this.manager = manager;
     }
 }
