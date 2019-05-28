@@ -53,7 +53,7 @@ public class ProjectRestController {
     @ResponseBody
     public String logTime(@RequestParam(value = "task_id") long taskId, @RequestParam(value = "time") int time) {
         Task task = taskService.getTaskById(taskId);
-        task.setUsedTime(new Date(task.getCreationDate().getTime() + time*60*1000));
+        task.setUsedTime(time);
         taskService.saveTask(task);
         return "ok";
     }

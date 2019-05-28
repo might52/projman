@@ -235,7 +235,7 @@ public class CommentServiceTest {
         task.setStatusId(status);
         task.setSubject(value);
         task.setDescription(value);
-        task.setUsedTime(new Date());
+        task.setUsedTime(10);
         if (isSave) {
             taskService.saveTask(task);
         }
