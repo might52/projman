@@ -100,24 +100,22 @@
                                 </div>
 
                                 <div class="col-5">
-                                    <form>
-                                        <div th:each="projectRole: ${projectRoles}">
-                                            <p th:if="${project.id == projectRole.projectId.id}">
-                                                <span th:utext="${projectRole.userId.name} + ' ' + ${projectRole.userId.secondName}"></span>
-                                                <label class="form-radio-label">
-                                                    <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" value="manager" th:checked="${projectRole.roleId.name == 'Manager'}">
-                                                    <span class="form-radio-sign">Manager</span>
-                                                </label>
-                                                <label class="form-radio-label">
-                                                    <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" value="employee" th:checked="${projectRole.roleId.name == 'Employee'}">
-                                                    <span class="form-radio-sign">Employee</span>
-                                                </label>
-                                            </p>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-5">
-                                    <button class="btn btn-success">Submit</button>
+                                    <div th:each="projectRole: ${projectRoles}">
+                                        <p th:if="${project.id == projectRole.projectId.id}">
+                                            <span th:utext="${projectRole.userId.name} + ' ' + ${projectRole.userId.secondName}"></span>
+                                            <label class="form-radio-label">
+                                                <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" th:id="${projectRole.roleId.id}" th:alt="${project.id}" th:value="${projectRole.userId.id}" th:checked="${projectRole.roleId.name == 'Manager'}">
+                                                <span class="form-radio-sign">Manager</span>
+                                            </label>
+                                            <label class="form-radio-label">
+                                                <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" th:id="${projectRole.roleId.id}" th:alt="${project.id}" th:value="${projectRole.userId.id}" th:checked="${projectRole.roleId.name == 'Employee'}">
+                                                <span class="form-radio-sign">Employee</span>
+                                            </label>
+                                        </p>
+                                    </div>
+                                    <div class="col-5">
+                                        <button id="save_button" class="btn btn-success">Submit</button>
+                                    </div>
                                 </div>
                             </div>
                         </tr>
@@ -145,4 +143,33 @@
 <script th:src="@{/js/plugin/jquery-mapael/maps/world_countries.min.js}"></script>
 <script th:src="@{/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
 <script th:src="@{/js/ready.min.js}"></script>
+<script>
+    $('body').on('click', '.btn-success', (e) => {
+        let currButton = $(e.currentTarget);
+        let pparent = currButton.parent().parent();
+        //console.log(pparent);
+
+        let inputs = pparent.find("input");
+        let checkedInputs = inputs.find("checked");
+        //console.log(checkedInputs);
+        //console.log(pparent.find("input:checked"));
+
+        let neededInput = pparent.find("input:checked");
+
+        $.each(neededInput, function(i, element)
+        {
+            console.log("222");
+            $.ajax({
+			    url: '/api/update_role',
+			    type: 'GET',
+			    data: "project_id=" + element.alt + "&user_id=" + element.value + "&role_id=" + element.id,
+			    success:function(response){
+			    	console.log(response);
+			    },
+		    });
+        });
+        //neededInput.each();
+        //document.location.reload(true);
+    });
+</script>
 </html>
