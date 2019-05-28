@@ -27,7 +27,7 @@ public class Task {
     private User createdBy;
     @Column(nullable = false)
     private Date creationDate;
-    private Date usedTime;
+    private int usedTime;
 
     public Task() {
     }
@@ -104,11 +104,11 @@ public class Task {
         this.creationDate = creationDate;
     }
 
-    public Date getUsedTime() {
+    public int getUsedTime() {
         return usedTime;
     }
 
-    public void setUsedTime(Date usedTime) {
+    public void setUsedTime(int usedTime) {
         this.usedTime = usedTime;
     }
 
