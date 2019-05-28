@@ -81,6 +81,9 @@
                 <li class="nav-item">
                     <a th:if="${user_pref.admin}" href="#" class="dropdown-item" id="create_new_proj_button" data-toggle="modal" data-target="#modalCreateProjectForm">New Project</a>
                 </li>
+                <li class="nav-item">
+                    <a th:if="${user_pref.admin}" href="#" class="dropdown-item" id="manage_proj_role_button" data-toggle="modal">Manage Roles</a>
+                </li>
             </ul>
         </div>
     </div>

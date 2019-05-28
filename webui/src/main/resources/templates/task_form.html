@@ -92,14 +92,12 @@
                                                 <h4 class="card-title" th:utext="${task.subject}"></h4>
                                             </td>
                                             <td align="right">
-                                                <button class="btn btn-info" style="width: 130px; margin-right: 20px;">Log Work</button>
-                                            </td>
-                                            <td align="right">
-                                                <div th:switch="${task.statusId.name}">
+                                                <span><button class="btn btn-info" style="width: 130px; margin-right: 20px;">Log Work</button></span>
+                                                <span th:switch="${task.statusId.name}">
                                                     <button class="btn btn-success" id="progress_change_button" style="width: 130px;" th:case="Assigned">Assigned</button>
                                                     <button class="btn btn-primary" style="width: 130px;" th:case="In Progress">Task Done</button>
                                                     <button class="btn btn-success" style="width: 130px;" th:case="Completed">Task In Progress</button>
-                                                </div>
+                                                </span>
                                             </td>
                                         </tr>
                                     </table>
