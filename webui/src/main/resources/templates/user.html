@@ -23,17 +23,6 @@
         </div>
         <nav class="navbar navbar-header navbar-expand-lg">
             <div class="container-fluid">
-
-                <form class="navbar-left navbar-form nav-search mr-md-3" action="">
-                    <div class="input-group">
-                        <input type="text" id="search_input" placeholder="Search ..." class="form-control">
-                        <div class="input-group-append">
-								<span class="input-group-text">
-									<i class="la la-search search-icon"></i>
-								</span>
-                        </div>
-                    </div>
-                </form>
                 <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
                     <li class="nav-item dropdown">
                         <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img th:src="@{/images/login_avatar.png}" alt="user-img" width="36" class="img-circle"><span th:utext="${user_pref.userLogin}"></span></span> </a>
@@ -45,8 +34,6 @@
                                         <p class="text-muted">hello@themekita.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
                                 </div>
                             </li>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"><i class="ti-settings"></i>Account Settings</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/main/logout"><i class="fa fa-power-off"></i>Logout</a>
                         </ul>
@@ -65,13 +52,6 @@
                         <span class="badge badge-count" th:utext="${projects.size()}" ></span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#">
-                        <i class="la la-table"></i>
-                        <p>Dashboard</p>
-                        <span class="badge badge-count">TODO</span>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
@@ -87,9 +67,6 @@
                                 <div class="col-md-3">
                                     <div class="card">
                                         <div class="card-header">
-                                            <a href="#" data-toggle="modal" class="editButton" id="editProject" data-target="#modalEditProjectForm">
-                                                <i class="la la-gear text-primary"></i>
-                                            </a>
                                             <h4 class="card-title" th:utext="${project.name}"></h4>
                                             <a th:href="@{/main/project_page?project_id={id}(id=${project.id})}" class="card-category" >View Project</a>
                                         </div>
@@ -119,16 +96,28 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div>
-                                            <table border="1">
-                                                <!--<tr th:each="projRole : ${projectRoles}" th:if="${projRole.projectId.id} == ${project.id}">-->
-                                                    <!--sdfsdfsdf-->
-                                                <!--</tr>-->
-                                            </table>
-                                        </div>
-
                                     </div>
+                                </div>
+
+                                <div class="col-5">
+                                    <form>
+                                        <div th:each="projectRole: ${projectRoles}">
+                                            <p th:if="${project.id == projectRole.projectId.id}">
+                                                <span th:utext="${projectRole.userId.name} + ' ' + ${projectRole.userId.secondName}"></span>
+                                                <label class="form-radio-label">
+                                                    <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" value="manager" th:checked="${projectRole.roleId.name == 'Manager'}">
+                                                    <span class="form-radio-sign">Manager</span>
+                                                </label>
+                                                <label class="form-radio-label">
+                                                    <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" value="employee" th:checked="${projectRole.roleId.name == 'Employee'}">
+                                                    <span class="form-radio-sign">Employee</span>
+                                                </label>
+                                            </p>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-5">
+                                    <button class="btn btn-success">Submit</button>
                                 </div>
                             </div>
                         </tr>
@@ -156,142 +145,4 @@
 <script th:src="@{/js/plugin/jquery-mapael/maps/world_countries.min.js}"></script>
 <script th:src="@{/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
 <script th:src="@{/js/ready.min.js}"></script>
-<script>
-    $('body').on('click', '.editButton', (e) => {
-        let parent = $(e.currentTarget).parent();
-    let projName = $(parent).find('.card-title').html();
-    //console.log(projName);
-
-    let pparent = $(parent).parent();
-    let projDescr = $(pparent).find('#task-complete').html();
-    //console.log(projDescr);
-    let assignedTo = $(pparent).find('.legend').html();
-    //console.log(assignedTo);
-
-    $('#edit_project_name').val(projName);
-    $('#edit_project_description').val(projDescr);
-    $('#edit_project_assigned').val($('#edit_project_assigned option').filter(function(){
-        return $(this).html()==assignedTo;
-    }).val());
-    });
-
-    /*$('body').on('click', '#create_new_proj_button', (e) => {
-        $('#edit_project_name').val("");
-        $('#edit_project_description').val("");
-        $('#edit_project_assigned').val("");
-        $('#edit_proj_button').html("Create")
-    });*/
-
-    search_input.oninput = function()
-    {
-        $.ajax({
-            url: '/api/projects',
-            type: 'GET',
-            data: "project_name=" + search_input.value,
-            success:function(response){
-                console.log(response);
-                $("#project_items").empty();
-                $.each(response,function(key, item) {
-                    $("#project_items").append('\
-					    <div class="row row-card-no-pd">\
-                            <div class="col-md-3">\
-						        <div class="card">\
-                                    <div class="card-header">\
-                                        <a href="#" data-toggle="modal" class="editButton" id="editProject" data-target="#modalCreateProjectForm">\
-                                            <i class="la la-gear text-primary"></i>\
-                                        </a>\
-                                        <h4 class="card-title">' + item.name + '</h4>\
-                                        <a href="/main/project_page?project_id=' + item.id +'" class="card-category" >View Project</a>\
-                                    </div>\
-                                    <div class="card-body">\
-                                        <div id="task-complete">' + item.description + '</div>\
-                                    </div>\
-                                    <div class="card-footer">\
-                                        <div class="legend">'+ item.managerName +'</div>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                            <div class="col-md-5">\
-                                <div class="card">\
-                                    <div class="card-body">\
-                                        <div class="progress-card">\
-                                            <div class="d-flex justify-content-between mb-1">\
-                                                <span class="text-muted">Total tasks</span>\
-                                                <span class="text-muted fw-bold">'+ item.total +'</span>\
-                                            </div>\
-                                            <div class="progress mb-2" style="height: 7px;">\
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="'+ item.total +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
-                                            </div>\
-                                        </div>\
-                                        <div class="progress-card">\
-                                            <div class="d-flex justify-content-between mb-1">\
-                                                <span class="text-muted">Assigned</span>\
-                                                <span class="text-muted fw-bold">'+ item.assignedCount +'</span>\
-                                            </div>\
-                                            <div class="progress mb-2" style="height: 7px;">\
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: '+ item.assignedPercent +'%" aria-valuenow="'+ item.assignedCount +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
-                                            </div>\
-                                        </div>\
-                                        <div class="progress-card">\
-                                            <div class="d-flex justify-content-between mb-1">\
-                                                <span class="text-muted">In Progress</span>\
-                                                <span class="text-muted fw-bold">'+ item.inProgressCount +'</span>\
-                                            </div>\
-                                            <div class="progress mb-2" style="height: 7px;">\
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width: '+ item.inProgressPercent +'%" aria-valuenow="'+ item.inProgressCount +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
-                                            </div>\
-                                        </div>\
-                                        <div class="progress-card">\
-                                            <div class="d-flex justify-content-between mb-1">\
-                                                <span class="text-muted">Completed</span>\
-                                                <span class="text-muted fw-bold">'+ item.completedCount +'</span>\
-                                            </div>\
-                                            <div class="progress mb-2" style="height: 7px;">\
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: '+ item.completedPercent +'%" aria-valuenow="'+ item.completedCount +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
-                                            </div>\
-                                        </div>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                            <div class="col-md-3">\
-                                <div class="card card-stats">\
-                                    <div class="card-body">\
-                                        <p class="fw-bold mt-1">Statistic</p>\
-                                        <div class="row">\
-                                            <div class="col-5">\
-                                                <div class="icon-big text-center icon-warning">\
-                                                    <i class="la la-pie-chart text-warning"></i>\
-                                                </div>\
-                                            </div>\
-                                            <div class="col-7 d-flex align-items-center">\
-                                                <div class="numbers">\
-                                                    <p class="card-category">Тут будет что-то...</p>\
-                                                    <h4 class="card-title">или не будет</h4>\
-                                                </div>\
-                                            </div>\
-                                        </div>\
-                                        <hr/>\
-                                        <div class="row">\
-                                            <div class="col-5">\
-                                                <div class="icon-big text-center">\
-                                                    <i class="la la-smile-o text-primary"></i>\
-                                                </div>\
-                                            </div>\
-                                            <div class="col-7 d-flex align-items-center">\
-                                                <div class="numbers">\
-                                                    <p class="card-category">Employees</p>\
-                                                    <h4 class="card-title">'+ item.employeeCount +'</h4>\
-                                                </div>\
-                                            </div>\
-                                        </div>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                        </div>\
-					');
-                });
-            },
-        });
-    }
-</script>
 </html>
