@@ -74,7 +74,7 @@
                                             </td>
                                             <td align="right">
                                                 <span><input type="number" style="width: 40px; margin-right: 10px;" id="log_work"></span>
-                                                <span><button class="btn btn-info" style="width: 130px; margin-right: 20px;">Log Work</button></span>
+                                                <span><button id="log_work_button"class="btn btn-info" style="width: 130px; margin-right: 20px;">Log Work</button></span>
                                                 <span th:switch="${task.statusId.name}">
                                                     <button class="btn btn-success" id="progress_change_button" style="width: 130px;" th:case="'Assigned'">In Progress</button>
                                                     <button class="btn btn-primary" id="progress_change_button" style="width: 130px;" th:case="'In Progress'">Completed</button>
@@ -119,7 +119,7 @@
                                                         <td style="width: 60%">
                                                             <div th:utext="${task.creationDate}"></div>
                                                             <div th:utext="${task.dueDate}"></div>
-                                                            <div th:utext="${task.usedTime} + 'h'"></div>
+                                                            <div id="log_time_html" th:utext="${task.usedTime} + 'h'"></div>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -191,7 +191,22 @@
 		});
 	}
 
-
+	log_work_button.onclick = function(){
+	    let hoursCount = $('#log_work').val();
+	    let currHoursCount = $('#log_time_html').text().slice(0, -1);
+	    console.log(currHoursCount);
+	    if (hoursCount) {
+            $.ajax({
+			    url: '/api/update_task_time',
+			    type: 'GET',
+			    data: "task_id=" + window.location.href.slice(window.location.href.indexOf("task_id=")+8) + "&time=" + (Number(hoursCount) + Number(currHoursCount)),
+			    success:function(response){
+			        console.log(response);
+			        $('#log_time_html').text((Number(hoursCount) + Number(currHoursCount)).toString() + "h")
+			    },
+		    });
+        }
+	}
 </script>
 
 </html>
