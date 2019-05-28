@@ -76,7 +76,7 @@ public class ProjectRestController {
         }
     }
 
-    @GetMapping(value = "add_user_to_project")
+    @GetMapping(value = "/add_user_to_project")
     @ResponseBody
     public String addUserToProject(
             @RequestParam(value = "project_id") long projectId,
