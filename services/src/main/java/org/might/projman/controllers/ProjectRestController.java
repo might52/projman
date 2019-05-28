@@ -138,10 +138,13 @@ public class ProjectRestController {
     @GetMapping(value = "/update_role")
     public String updateRole(
             @RequestParam("user_id") long userID,
-            @RequestParam("role_id") long roleID,
+            @RequestParam("role_id") String roleName,
             @RequestParam("project_id") long projectID) {
         User user = userService.getUserById(userID);
-        Role role = roleService.getRoleById(roleID);
+        Optional<Role> role = roleService.getAll()
+                .stream()
+                .filter(r -> r.getName().equals(roleName))
+                .findFirst();
         Project project = projectService.getProjectById(projectID);
 
         Optional<ProjectRole> projectRole = projectRoleService.getAll().stream().filter(
@@ -149,8 +152,10 @@ public class ProjectRestController {
         ).findFirst();
 
         projectRole.ifPresent(c -> {
-            c.setRoleId(role);
-            projectRoleService.saveProjectRole(c);
+            if (role.isPresent()) {
+                c.setRoleId(role.get());
+                projectRoleService.saveProjectRole(c);
+            }
         });
 
         return "ok";

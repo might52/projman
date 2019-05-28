@@ -104,11 +104,11 @@
                                         <p th:if="${project.id == projectRole.projectId.id}">
                                             <span th:utext="${projectRole.userId.name} + ' ' + ${projectRole.userId.secondName}"></span>
                                             <label class="form-radio-label">
-                                                <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" th:id="${projectRole.roleId.id}" th:alt="${project.id}" th:value="${projectRole.userId.id}" th:checked="${projectRole.roleId.name == 'Manager'}">
+                                                <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" id="Manager" th:alt="${project.id}" th:value="${projectRole.userId.id}" th:checked="${projectRole.roleId.name == 'Manager'}">
                                                 <span class="form-radio-sign">Manager</span>
                                             </label>
                                             <label class="form-radio-label">
-                                                <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" th:id="${projectRole.roleId.id}" th:alt="${project.id}" th:value="${projectRole.userId.id}" th:checked="${projectRole.roleId.name == 'Employee'}">
+                                                <input class="form-radio-input" type="radio" th:name="${projectRole.projectId.id} + '_' + ${projectRole.userId.id}" id="Employee" th:alt="${project.id}" th:value="${projectRole.userId.id}" th:checked="${projectRole.roleId.name == 'Employee'}">
                                                 <span class="form-radio-sign">Employee</span>
                                             </label>
                                         </p>
