@@ -10,11 +10,11 @@ public class ProjectRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne(targetEntity = Project.class, optional = false)
+    @OneToOne(targetEntity = Project.class)
     private Project projectId;
-    @OneToOne(targetEntity = User.class, optional = false)
+    @OneToOne(targetEntity = User.class)
     private User userId;
-    @OneToOne(targetEntity = Role.class, optional = false)
+    @OneToOne(targetEntity = Role.class)
     private Role roleId;
 
     public ProjectRole() {
