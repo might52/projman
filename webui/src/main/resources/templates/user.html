@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Projman</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <link rel="icon" type="image/png" th:href="@{/images/icons/main.ico}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/ready.css}">
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+</head>
+<body>
+<div class="wrapper">
+    <div class="main-header">
+        <div class="logo-header">
+            <a th:href="@{/main/main_page}" class="logo">
+                PROJMAN
+            </a>
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+        </div>
+        <nav class="navbar navbar-header navbar-expand-lg">
+            <div class="container-fluid">
+
+                <form class="navbar-left navbar-form nav-search mr-md-3" action="">
+                    <div class="input-group">
+                        <input type="text" id="search_input" placeholder="Search ..." class="form-control">
+                        <div class="input-group-append">
+								<span class="input-group-text">
+									<i class="la la-search search-icon"></i>
+								</span>
+                        </div>
+                    </div>
+                </form>
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img th:src="@{/images/login_avatar.png}" alt="user-img" width="36" class="img-circle"><span th:utext="${user_pref.userLogin}"></span></span> </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <div class="user-box">
+                                    <div class="u-img"><img th:src="@{/images/login_avatar.png}" alt="user"></div>
+                                    <div class="u-text" th:utext="${user_pref.userLogin}">
+                                        <p class="text-muted">hello@themekita.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                                </div>
+                            </li>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="ti-settings"></i>Account Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/main/logout"><i class="fa fa-power-off"></i>Logout</a>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="sidebar">
+        <div class="scrollbar-inner sidebar-wrapper">
+            <ul class="nav">
+                <li class="nav-item active">
+                    <a th:href="@{/main/main_page}">
+                        <i class="la la-dashboard"></i>
+                        <p>Projects</p>
+                        <span class="badge badge-count" th:utext="${projects.size()}" ></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">
+                        <i class="la la-table"></i>
+                        <p>Dashboard</p>
+                        <span class="badge badge-count">TODO</span>
+                    </a>
+                </li>
+            </ul>
+            <hr align="left" width="100%" size="4" color="#6c757d" />
+            <ul class="nav">
+                <li class="nav-item">
+                    <a th:if="${user_pref.admin}" href="#" th:href="@{/user}" class="dropdown-item" id="manage_proj_role_button" data-toggle="/user">Manage Roles</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<!--
+    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="#" class="login100-form validate-form" th:action="@{/main/createUser}" th:object="${loginFormViewModel}" method="post">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Creating New User</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input required type="text" id="orangeForm-login" class="form-control validate" th:field="*{login}" autocomplete="new-password">
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">User login</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input required type="text" id="orangeForm-name" class="form-control validate" th:field="*{firstName}" autocomplete="new-password">
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">First Name</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input required type="text" id="orangeForm-second-name" class="form-control validate" th:field="*{secondName}" autocomplete="new-password">
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Second Name</label>
+                        </div>
+                        <div class="md-form mb-4">
+                            <i class="fas fa-lock prefix grey-text"></i>
+                            <input required type="password" id="orangeForm-pass" class="form-control validate" th:field="*{password}" autocomplete="new-password">
+                            <label data-error="wrong" data-success="right" for="orangeForm-pass">User password</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-deep-orange">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCreateProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="#" class="login100-form validate-form" th:action="@{/main/create_project}" th:object="${projectFormViewModel}" method="post">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Creating New Project</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input required type="text" id="create_edit_project_name" class="form-control validate" autocomplete="new-password" th:field="*{name}">
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-lock prefix grey-text"></i>
+                            <textarea required type="text" id="create_edit_project_description" class="md-textarea form-control" rows="5" th:field="*{description}"></textarea>
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Description</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Assign to</label>
+                            <select th:field="*{account}" id="create_edit_project_assigned">
+                                <option value=""> Select user </option>
+                                <option th:each="user : ${users}"
+                                        th:value="${user.account}"
+                                        th:utext="${user.name} + ' ' + ${user.secondName}">\
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button class="btn btn-deep-orange" id="create_edit_proj_button">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalEditProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="#" class="login100-form validate-form" th:action="@{/main/update_project}" th:object="${projectFormViewModel}" method="post">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Changing Project</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <input required type="text" id="edit_project_name" class="form-control validate" autocomplete="new-password" th:field="*{name}">
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-lock prefix grey-text"></i>
+                            <textarea required type="text" id="edit_project_description" class="md-textarea form-control" rows="5" th:field="*{description}"></textarea>
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Description</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <i class="fas fa-user prefix grey-text"></i>
+                            <label data-error="wrong" data-success="right" for="orangeForm-name">Assign to</label>
+                            <select th:field="*{account}" id="edit_project_assigned">
+                                <option value=""> Select user </option>
+                                <option th:each="user : ${users}"
+                                        th:value="${user.account}"
+                                        th:utext="${user.name} + ' ' + ${user.secondName}">\
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button th:field="*{id}" class="btn btn-deep-orange" id="edit_proj_button">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+-->
+</div>
+</body>
+
+<script th:src="@{/js/core/jquery.3.2.1.min.js}"></script>
+<script th:src="@{/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js}"></script>
+<script th:src="@{/js/core/popper.min.js}"></script>
+<script th:src="@{/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
+<script th:src="@{/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js}"></script>
+<script th:src="@{/js/plugin/jquery-mapael/jquery.mapael.min.js}"></script>
+<script th:src="@{/js/plugin/jquery-mapael/maps/world_countries.min.js}"></script>
+<script th:src="@{/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
+<script th:src="@{/js/ready.min.js}"></script>
+<script>
+    $('body').on('click', '.editButton', (e) => {
+        let parent = $(e.currentTarget).parent();
+    let projName = $(parent).find('.card-title').html();
+    //console.log(projName);
+
+    let pparent = $(parent).parent();
+    let projDescr = $(pparent).find('#task-complete').html();
+    //console.log(projDescr);
+    let assignedTo = $(pparent).find('.legend').html();
+    //console.log(assignedTo);
+
+    $('#edit_project_name').val(projName);
+    $('#edit_project_description').val(projDescr);
+    $('#edit_project_assigned').val($('#edit_project_assigned option').filter(function(){
+        return $(this).html()==assignedTo;
+    }).val());
+    });
+
+    /*$('body').on('click', '#create_new_proj_button', (e) => {
+        $('#edit_project_name').val("");
+        $('#edit_project_description').val("");
+        $('#edit_project_assigned').val("");
+        $('#edit_proj_button').html("Create")
+    });*/
+
+    search_input.oninput = function()
+    {
+        $.ajax({
+            url: '/api/projects',
+            type: 'GET',
+            data: "project_name=" + search_input.value,
+            success:function(response){
+                console.log(response);
+                $("#project_items").empty();
+                $.each(response,function(key, item) {
+                    $("#project_items").append('\
+					    <div class="row row-card-no-pd">\
+                            <div class="col-md-3">\
+						        <div class="card">\
+                                    <div class="card-header">\
+                                        <a href="#" data-toggle="modal" class="editButton" id="editProject" data-target="#modalCreateProjectForm">\
+                                            <i class="la la-gear text-primary"></i>\
+                                        </a>\
+                                        <h4 class="card-title">' + item.name + '</h4>\
+                                        <a href="/main/project_page?project_id=' + item.id +'" class="card-category" >View Project</a>\
+                                    </div>\
+                                    <div class="card-body">\
+                                        <div id="task-complete">' + item.description + '</div>\
+                                    </div>\
+                                    <div class="card-footer">\
+                                        <div class="legend">'+ item.managerName +'</div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                            <div class="col-md-5">\
+                                <div class="card">\
+                                    <div class="card-body">\
+                                        <div class="progress-card">\
+                                            <div class="d-flex justify-content-between mb-1">\
+                                                <span class="text-muted">Total tasks</span>\
+                                                <span class="text-muted fw-bold">'+ item.total +'</span>\
+                                            </div>\
+                                            <div class="progress mb-2" style="height: 7px;">\
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="'+ item.total +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
+                                            </div>\
+                                        </div>\
+                                        <div class="progress-card">\
+                                            <div class="d-flex justify-content-between mb-1">\
+                                                <span class="text-muted">Assigned</span>\
+                                                <span class="text-muted fw-bold">'+ item.assignedCount +'</span>\
+                                            </div>\
+                                            <div class="progress mb-2" style="height: 7px;">\
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: '+ item.assignedPercent +'%" aria-valuenow="'+ item.assignedCount +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
+                                            </div>\
+                                        </div>\
+                                        <div class="progress-card">\
+                                            <div class="d-flex justify-content-between mb-1">\
+                                                <span class="text-muted">In Progress</span>\
+                                                <span class="text-muted fw-bold">'+ item.inProgressCount +'</span>\
+                                            </div>\
+                                            <div class="progress mb-2" style="height: 7px;">\
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: '+ item.inProgressPercent +'%" aria-valuenow="'+ item.inProgressCount +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
+                                            </div>\
+                                        </div>\
+                                        <div class="progress-card">\
+                                            <div class="d-flex justify-content-between mb-1">\
+                                                <span class="text-muted">Completed</span>\
+                                                <span class="text-muted fw-bold">'+ item.completedCount +'</span>\
+                                            </div>\
+                                            <div class="progress mb-2" style="height: 7px;">\
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: '+ item.completedPercent +'%" aria-valuenow="'+ item.completedCount +'" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top"></div>\
+                                            </div>\
+                                        </div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                            <div class="col-md-3">\
+                                <div class="card card-stats">\
+                                    <div class="card-body">\
+                                        <p class="fw-bold mt-1">Statistic</p>\
+                                        <div class="row">\
+                                            <div class="col-5">\
+                                                <div class="icon-big text-center icon-warning">\
+                                                    <i class="la la-pie-chart text-warning"></i>\
+                                                </div>\
+                                            </div>\
+                                            <div class="col-7 d-flex align-items-center">\
+                                                <div class="numbers">\
+                                                    <p class="card-category">Тут будет что-то...</p>\
+                                                    <h4 class="card-title">или не будет</h4>\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                        <hr/>\
+                                        <div class="row">\
+                                            <div class="col-5">\
+                                                <div class="icon-big text-center">\
+                                                    <i class="la la-smile-o text-primary"></i>\
+                                                </div>\
+                                            </div>\
+                                            <div class="col-7 d-flex align-items-center">\
+                                                <div class="numbers">\
+                                                    <p class="card-category">Employees</p>\
+                                                    <h4 class="card-title">'+ item.employeeCount +'</h4>\
+                                                </div>\
+                                            </div>\
+                                        </div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>\
+					');
+                });
+            },
+        });
+    }
+</script>
+</html>
