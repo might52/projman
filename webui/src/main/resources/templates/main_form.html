@@ -262,7 +262,7 @@
 						  <div class="md-form mb-5">
                               <i class="fas fa-user prefix grey-text"></i>
                               <label data-error="wrong" data-success="right" for="orangeForm-name">Assign to</label>
-                              <select th:field="*{account}" id="create_edit_project_assigned">
+                              <select required th:field="*{account}" id="create_edit_project_assigned">
                                   <option value=""> Select user </option>
                                   <option th:each="user : ${users}"
                                           th:value="${user.account}"
