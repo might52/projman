@@ -163,6 +163,22 @@ public class MainController {
         projectService.saveProject(project);
         if (projectRole != null) {
             projectRoleService.saveProjectRole(projectRole);
+
+            ProjectRole finalProjectRole = projectRole;
+            userService.getAll().forEach(user -> {
+                if (!user.getId().equals(finalProjectRole.getUserId().getId())) {
+                    ProjectRole anotherProjectRole = new ProjectRole();
+                    anotherProjectRole.setProjectId(project);
+                    anotherProjectRole.setUserId(user);
+                    anotherProjectRole.setRoleId(roleService.getAll()
+                            .stream()
+                            .filter(r -> r.getName().startsWith("Employee"))
+                            .findFirst().get());
+                    projectRoleService.saveProjectRole(anotherProjectRole);
+                }
+            });
+
+
         }
         return MAIN_REDIRECT;
     }
