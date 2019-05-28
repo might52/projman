@@ -282,7 +282,7 @@
     <div class="modal fade" id="modalEditProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="#" class="login100-form validate-form" th:action="@{/main/create_project}" th:object="${projectFormViewModel}" method="post">
+                <form action="#" class="login100-form validate-form" th:action="@{/main/update_project}" th:object="${projectFormViewModel}" method="post">
                     <div class="modal-header text-center">
                         <h4 class="modal-title w-100 font-weight-bold">Changing Project</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -313,7 +313,7 @@
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button class="btn btn-deep-orange" id="edit_proj_button">Update</button>
+                        <button th:field="*{id}" class="btn btn-deep-orange" id="edit_proj_button">Update</button>
                     </div>
                 </form>
             </div>

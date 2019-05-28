@@ -112,9 +112,10 @@ public class MainController {
         return MAIN_REDIRECT;
     }
 
-    @PostMapping(value = "create_project")
+    @PostMapping(value = "/create_project")
     public String createProject(@ModelAttribute(PROJECT_FORM_ATTR) CreateEditProjectViewModel projectViewModel) {
         Project project = new Project();
+
         project.setName(projectViewModel.getName());
         project.setDescription(projectViewModel.getDescription());
 

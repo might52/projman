@@ -4,6 +4,7 @@ package org.might.projman.controllers;
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.controllers.dtos.ProjectDTOResponse;
 import org.might.projman.dba.model.*;
+import org.might.projman.model.CreateEditProjectViewModel;
 import org.might.projman.services.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,6 +102,38 @@ public class ProjectRestController {
             projectRole.setUserId(user);
         }
         projectRoleService.saveProjectRole(projectRole);
+        return "ok";
+    }
+
+    @GetMapping(value = "/update_project")
+    @ResponseBody
+    public String updateProject(
+            @RequestParam("project_id") long projectID,
+            @RequestParam("project_name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("account") String account
+    ) {
+        Project project = projectService.getProjectById(projectID);
+        project.setName(name);
+        project.setDescription(description);
+
+        projectService.saveProject(project);
+
+        Optional<ProjectRole> projectRole = projectRoleService.getAll().stream()
+                .filter(pr -> pr.getProjectId().getId().equals(projectID))
+                .findFirst();
+
+        if (projectRole.isPresent()) {
+            ProjectRole pr = projectRole.get();
+
+            Optional<User> user = userService.getAll()
+                    .stream()
+                    .filter(u -> u.getAccount().equals(account)).findFirst();
+            user.ifPresent(pr::setUserId);
+
+            projectRoleService.saveProjectRole(pr);
+        }
+
         return "ok";
     }
 
