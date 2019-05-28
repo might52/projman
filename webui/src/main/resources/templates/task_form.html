@@ -138,7 +138,7 @@
                                                         <td style="width: 60%">
                                                             <div th:utext="${task.creationDate}"></div>
                                                             <div th:utext="${task.dueDate}"></div>
-                                                            <div>TODO</div>
+                                                            <div th:utext="${task.usedTime} + 'h'"></div>
                                                         </td>
                                                     </tr>
                                                 </table>
