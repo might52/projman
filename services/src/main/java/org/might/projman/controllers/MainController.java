@@ -116,6 +116,15 @@ public class MainController {
 
     @PostMapping(value = "/create_project")
     public String createProject(@ModelAttribute(PROJECT_FORM_ATTR) CreateEditProjectViewModel projectViewModel) {
+
+        Optional<Project> optionalProject = projectService.getAll()
+                .stream()
+                .filter(p -> p.getName().equals(projectViewModel.getName()))
+                .findFirst();
+        if (optionalProject.isPresent()) {
+            return MAIN_REDIRECT;
+        }
+
         Project project = new Project();
 
         project.setName(projectViewModel.getName());
