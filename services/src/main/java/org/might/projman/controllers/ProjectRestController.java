@@ -3,12 +3,8 @@ package org.might.projman.controllers;
 
 import org.might.projman.controllers.annotations.Auth;
 import org.might.projman.controllers.dtos.ProjectDTOResponse;
-import org.might.projman.dba.model.Status;
-import org.might.projman.dba.model.Task;
-import org.might.projman.services.ProjectRoleService;
-import org.might.projman.services.ProjectService;
-import org.might.projman.services.StatusService;
-import org.might.projman.services.TaskService;
+import org.might.projman.dba.model.*;
+import org.might.projman.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,15 +23,21 @@ public class ProjectRestController {
     private TaskService taskService;
     private ProjectRoleService projectRoleService;
     private StatusService statusService;
+    private RoleService roleService;
+    private UserService userService;
 
     public ProjectRestController(TaskService taskService,
                                  ProjectRoleService projectRoleService,
                                  ProjectService projectService,
-                                 StatusService statusService) {
+                                 StatusService statusService,
+                                 RoleService roleService,
+                                 UserService userService) {
         this.projectService = projectService;
         this.taskService = taskService;
         this.projectRoleService = projectRoleService;
         this.statusService = statusService;
+        this.roleService = roleService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/projects")
@@ -72,6 +74,35 @@ public class ProjectRestController {
         } else {
             return "Can not find status by name";
         }
+    }
+
+    @GetMapping(value = "add_user_to_project")
+    @ResponseBody
+    public String addUserToProject(
+            @RequestParam(value = "project_id") long projectId,
+            @RequestParam(value = "user_id") long user_id,
+            @RequestParam(value = "role_id") long role_id
+    ) {
+        Project project = projectService.getProjectById(projectId);
+        User user = userService.getUserById(user_id);
+        Role role = roleService.getRoleById(role_id);
+
+        Optional<ProjectRole> existProjectRole = projectRoleService.getAll()
+                .stream()
+                .filter(pr -> pr.getProjectId().getId().equals(projectId) && pr.getUserId().getId().equals(user_id))
+                .findFirst();
+        ProjectRole projectRole;
+        if (existProjectRole.isPresent()) {
+            projectRole = existProjectRole.get();
+            projectRole.setRoleId(role);
+        } else {
+            projectRole = new ProjectRole();
+            projectRole.setRoleId(role);
+            projectRole.setProjectId(project);
+            projectRole.setUserId(user);
+        }
+        projectRoleService.saveProjectRole(projectRole);
+        return "ok";
     }
 
 }
