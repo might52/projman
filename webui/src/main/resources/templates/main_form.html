@@ -73,7 +73,7 @@
                     <a th:if="${user_pref.admin}" href="#" class="dropdown-item" id="create_new_proj_button" data-toggle="modal" data-target="#modalCreateProjectForm">New Project</a>
                 </li>
                 <li class="nav-item">
-                    <a th:if="${user_pref.admin}" href="#" class="dropdown-item" id="manage_proj_role_button" data-toggle="modal">Manage Roles</a>
+                    <a th:if="${user_pref.admin}" th:href="@{/user}" class="dropdown-item" id="manage_proj_role_button" data-toggle="/user">Manage Roles</a>
                 </li>
             </ul>
         </div>
@@ -273,7 +273,8 @@
     <div class="modal fade" id="modalEditProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="#" class="login100-form validate-form" th:action="@{/main/update_project}" th:object="${projectFormViewModel}" method="post">
+                <form action="#" class="login100-form validate-form">
+                    <div hidden="true" id="project_id"></div>
                     <div class="modal-header text-center">
                         <h4 class="modal-title w-100 font-weight-bold">Changing Project</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -283,18 +284,18 @@
                     <div class="modal-body mx-3">
                         <div class="md-form mb-5">
                             <i class="fas fa-user prefix grey-text"></i>
-                            <input required type="text" id="edit_project_name" class="form-control validate" autocomplete="new-password" th:field="*{name}">
+                            <input required type="text" id="edit_project_name" class="form-control validate" autocomplete="new-password">
                             <label data-error="wrong" data-success="right" for="orangeForm-name">Project name</label>
                         </div>
                         <div class="md-form mb-5">
                             <i class="fas fa-lock prefix grey-text"></i>
-                            <textarea required type="text" id="edit_project_description" class="md-textarea form-control" rows="5" th:field="*{description}"></textarea>
+                            <textarea required type="text" id="edit_project_description" class="md-textarea form-control" rows="5" ></textarea>
                             <label data-error="wrong" data-success="right" for="orangeForm-name">Description</label>
                         </div>
                         <div class="md-form mb-5">
                             <i class="fas fa-user prefix grey-text"></i>
                             <label data-error="wrong" data-success="right" for="orangeForm-name">Assign to</label>
-                            <select th:field="*{account}" id="edit_project_assigned">
+                            <select id="edit_project_assigned">
                                 <option value=""> Select user </option>
                                 <option th:each="user : ${users}"
                                         th:value="${user.account}"
@@ -326,21 +327,36 @@
 <script>
 	$('body').on('click', '.editButton', (e) => {
 		let parent = $(e.currentTarget).parent();
-		let projName = $(parent).find('.card-title').html();
-        //console.log(projName);
+		let projNameHtml = $(parent).find('.card-title');
+		let projName = projNameHtml.html();
+		let url = $(parent).find('.card-category').attr("href");
+		let projectId = url.slice(url.indexOf("project_id=")+11);
+        $('#project_id').text(projectId)
+        console.log(projectId);
 
 		let pparent = $(parent).parent();
 		let projDescr = $(pparent).find('#task-complete').html();
-		//console.log(projDescr);
 		let assignedTo = $(pparent).find('.legend').html();
-		//console.log(assignedTo);
 
 		$('#edit_project_name').val(projName);
 		$('#edit_project_description').val(projDescr);
 		$('#edit_project_assigned').val($('#edit_project_assigned option').filter(function(){
 		    return $(this).html()==assignedTo;
 		}).val());
+		console.log($('#project_id').text());
 	});
+
+    edit_proj_button.onclick = function(){
+        $.ajax({
+			url: '/api/update_project',
+			type: 'GET',
+			data: "project_id=" + $('#project_id').text() + "&project_name=" + $('#edit_project_name').val() + "&description=" + $('#edit_project_description').val() + "&account=" + $('#edit_project_assigned').val(),
+			success:function(response){
+				console.log(response);
+				document.location.reload(true);
+			},
+		});
+    }
 
 	/*$('body').on('click', '#create_new_proj_button', (e) => {
 	    $('#edit_project_name').val("");

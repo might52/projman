@@ -86,9 +86,9 @@
                                             <td align="right">
                                                 <span><button class="btn btn-info" style="width: 130px; margin-right: 20px;">Log Work</button></span>
                                                 <span th:switch="${task.statusId.name}">
-                                                    <button class="btn btn-success" id="progress_change_button" style="width: 130px;" th:case="'Assigned'">Assigned</button>
-                                                    <button class="btn btn-primary" style="width: 130px;" th:case="'In Progress'">Task Done</button>
-                                                    <button class="btn btn-success" style="width: 130px;" th:case="'Completed'">Task In Progress</button>
+                                                    <button class="btn btn-success" id="progress_change_button" style="width: 130px;" th:case="'Assigned'">In Progress</button>
+                                                    <button class="btn btn-primary" id="progress_change_button" style="width: 130px;" th:case="'In Progress'">Completed</button>
+                                                    <button class="btn btn-success" id="progress_change_button" style="width: 130px;" th:case="'Completed'">In Progress</button>
                                                 </span>
                                             </td>
                                         </tr>
@@ -138,13 +138,10 @@
                                     </table>
                                 </div>
                                 <div class="card-footer">
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -165,25 +162,41 @@
 <script>
     progress_change_button.onclick = function()
 	{
-	    let statusName = "";
-	    let nextStatus = "";
 	    let currButton = $(this);
-	    if($(this).html().toLowerCase() == "assigned"){
-	        statusName = "Assigned";
+	    let nextStatus = "";
+	    let nextText = "";
+
+	    let currClass = ""
+	    let futureClass = ""
+	    /*if($(this).html().toLowerCase() == "assigned"){
 	        nextStatus = "In Progress";
-	    } else if($(this).html().toLowerCase() == "in progress"){
-	        statusName = "In Progress";
-	        nextStatus = "Completed";
+
+	        currClass="btn-default"
+	        futureClass="btn-success"
+	    } else*/
+
+
+	    if($(this).html().toLowerCase() == "in progress"){
+	        nextStatus = "In Progress";
+	        nextText = "Completed"
+
+	        currClass="btn-success"
+	        futureClass="btn-primary"
 	    } else if($(this).html().toLowerCase() == "completed"){
-	        statusName = "Completed";
 	        nextStatus = "Completed";
+            nextText = "In Progress"
+
+	        currClass="btn-primary"
+	        futureClass="btn-success"
 	    }
 		$.ajax({
 			url: '/api/update_task_status',
 			type: 'GET',
-			data: "task_id=" + window.location.href.slice(window.location.href.indexOf("task_id=")+8) + "&status_name=" + statusName,
+			data: "task_id=" + window.location.href.slice(window.location.href.indexOf("task_id=")+8) + "&status_name=" + nextStatus,
 			success:function(response){
-				currButton.html(nextStatus);
+				currButton.html(nextText);
+				currButton.removeClass(currClass);
+				currButton.addClass(futureClass);
 			},
 		});
 	}
